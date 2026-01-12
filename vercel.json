@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@react_app_api_url",
+    "REACT_APP_GOOGLE_CLIENT_ID": "@react_app_google_client_id",
+    "REACT_APP_APP_NAME": "@react_app_app_name",
+    "REACT_APP_COMPANY_NAME": "@react_app_company_name"
+  }
+}

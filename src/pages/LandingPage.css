@@ -1,0 +1,239 @@
+/* Landing Page Styles */
+.landing-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-container {
+  max-width: 1000px;
+  width: 100%;
+  text-align: center;
+}
+
+.landing-hero {
+  margin-bottom: 4rem;
+  color: white;
+}
+
+.landing-hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.landing-subtitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 1.5rem 0;
+  opacity: 0.9;
+}
+
+.landing-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.feature-card {
+  background: var(--card-bg, #ffffff);
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color, #e1e5e9);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  color: white;
+}
+
+.feature-card h3 {
+  color: var(--text-color, #333333);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.feature-card p {
+  color: var(--text-muted, #6c757d);
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.auth-note {
+  color: var(--text-muted, #6c757d);
+  font-style: italic;
+  margin: 0 !important;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
+  background: var(--secondary-bg, #6c757d);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-hover, #5a6268);
+  transform: translateY(-2px);
+}
+
+.landing-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item {
+  color: white;
+  text-align: center;
+}
+
+.stat-item h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.stat-item p {
+  margin: 0;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #2d2d2d;
+    --text-color: #ffffff;
+    --text-muted: #aaaaaa;
+    --border-color: #444444;
+    --secondary-bg: #495057;
+    --secondary-hover: #6c757d;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .landing-page {
+    padding: 1rem;
+  }
+  
+  .landing-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .landing-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .landing-description {
+    font-size: 1rem;
+  }
+  
+  .landing-features {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .feature-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .landing-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .landing-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+/* Hide scrollbars while keeping scroll functionality */
+.landing-page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.landing-page::-webkit-scrollbar {
+  display: none;
+}

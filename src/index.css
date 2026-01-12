@@ -1,0 +1,70 @@
+/* YODECO Brand Colors & Dark Mode System - Import from App.css */
+/* This file imports the comprehensive dark mode system */
+
+/* Force dark theme for devices that prefer it */
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Scrollbar styling for dark mode - Hidden but functional */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* Firefox scrollbar hiding */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbars for all elements */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

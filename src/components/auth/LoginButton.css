@@ -1,0 +1,85 @@
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #3c4043;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  outline: none;
+}
+
+.login-button:hover:not(:disabled) {
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.30), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  background-color: #f8f9fa;
+}
+
+.login-button:active:not(:disabled) {
+  background-color: #f1f3f4;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.30), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-button--small {
+  padding: 8px 16px;
+  font-size: 14px;
+  min-height: 36px;
+}
+
+.login-button--medium {
+  padding: 12px 24px;
+  font-size: 16px;
+  min-height: 44px;
+}
+
+.login-button--large {
+  padding: 16px 32px;
+  font-size: 18px;
+  min-height: 52px;
+}
+
+.login-button__content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-button__icon {
+  flex-shrink: 0;
+}
+
+.login-button__text {
+  white-space: nowrap;
+}
+
+/* Focus styles for accessibility */
+.login-button:focus-visible {
+  outline: 2px solid #4285f4;
+  outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .login-button {
+    background-color: #2d2e30;
+    border-color: #5f6368;
+    color: #e8eaed;
+  }
+  
+  .login-button:hover:not(:disabled) {
+    background-color: #35363a;
+  }
+  
+  .login-button:active:not(:disabled) {
+    background-color: #3c4043;
+  }
+}

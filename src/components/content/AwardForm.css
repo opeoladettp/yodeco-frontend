@@ -1,0 +1,339 @@
+.award-form {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px var(--shadow-light);
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid var(--border-secondary);
+  transition: all 0.3s ease;
+  
+  /* YODECO Brand Colors */
+  --yodeco-primary: #398213;
+  --yodeco-secondary: #C19E33;
+}
+
+.award-form__header {
+  margin-bottom: 24px;
+}
+
+.award-form__header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.award-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.award-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.award-form__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.award-form__input,
+.award-form__textarea,
+.award-form__select {
+  padding: 12px 16px;
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: all 0.2s ease;
+}
+
+.award-form__input:focus,
+.award-form__textarea:focus,
+.award-form__select:focus {
+  outline: none;
+  border-color: var(--yodeco-primary);
+  box-shadow: 0 0 0 2px rgba(57, 130, 19, 0.1);
+}
+
+.award-form__input--error,
+.award-form__textarea--error,
+.award-form__select--error {
+  border-color: #f28b82;
+}
+
+.award-form__input--error:focus,
+.award-form__textarea--error:focus,
+.award-form__select--error:focus {
+  border-color: #f28b82;
+  box-shadow: 0 0 0 2px rgba(242, 139, 130, 0.1);
+}
+
+.award-form__input:disabled,
+.award-form__textarea:disabled,
+.award-form__select:disabled {
+  background: #f8f9fa;
+  color: #5f6368;
+  cursor: not-allowed;
+}
+
+.award-form__textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.award-form__textarea::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.award-form__select {
+  cursor: pointer;
+}
+
+.award-form__loading {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  color: #5f6368;
+  font-size: 14px;
+}
+
+.award-form__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #202124;
+}
+
+.award-form__checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.award-form__checkbox-text {
+  font-weight: 500;
+}
+
+.award-form__help {
+  font-size: 12px;
+  color: #5f6368;
+  margin-top: 4px;
+}
+
+.award-form__error {
+  font-size: 12px;
+  color: #f28b82;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.award-form__error::before {
+  content: '⚠';
+  font-size: 14px;
+}
+
+.award-form__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid #e8eaed;
+}
+
+.award-form__button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-width: 120px;
+}
+
+.award-form__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.award-form__button--primary {
+  background: var(--yodeco-primary);
+  color: white;
+}
+
+.award-form__button--primary:hover:not(:disabled) {
+  background: #2d6b0f;
+  box-shadow: 0 2px 4px rgba(57, 130, 19, 0.3);
+}
+
+.award-form__button--secondary {
+  background: white;
+  color: #5f6368;
+  border: 1px solid #dadce0;
+}
+
+.award-form__button--secondary:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #5f6368;
+}
+
+.award-form__button:focus-visible {
+  outline: 2px solid var(--yodeco-primary);
+  outline-offset: 2px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .award-form {
+    padding: 20px;
+  }
+
+  .award-form__actions {
+    flex-direction: column;
+  }
+
+  .award-form__button {
+    width: 100%;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .award-form {
+    background: #2d2e30;
+    border: 1px solid #5f6368;
+  }
+
+  .award-form__header h3 {
+    color: #e8eaed;
+  }
+
+  .award-form__label {
+    color: #e8eaed;
+  }
+
+  .award-form__input,
+  .award-form__textarea,
+  .award-form__select {
+    background: #3c4043;
+    border-color: #5f6368;
+    color: #e8eaed;
+  }
+
+  .award-form__input:focus,
+  .award-form__textarea:focus,
+  .award-form__select:focus {
+    border-color: #8ab4f8;
+    box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.1);
+  }
+
+  .award-form__input--error,
+  .award-form__textarea--error,
+  .award-form__select--error {
+    border-color: #f28b82;
+  }
+
+  .award-form__input--error:focus,
+  .award-form__textarea--error:focus,
+  .award-form__select--error:focus {
+    border-color: #f28b82;
+    box-shadow: 0 0 0 2px rgba(242, 139, 130, 0.1);
+  }
+
+  .award-form__input:disabled,
+  .award-form__textarea:disabled,
+  .award-form__select:disabled {
+    background: #5f6368;
+    color: #9aa0a6;
+  }
+
+  .award-form__loading {
+    background: #3c4043;
+    border-color: #5f6368;
+    color: #9aa0a6;
+  }
+
+  .award-form__checkbox-label {
+    color: #e8eaed;
+  }
+
+  .award-form__help {
+    color: #9aa0a6;
+  }
+
+  .award-form__error {
+    color: #f28b82;
+  }
+
+  .award-form__actions {
+    border-top-color: #5f6368;
+  }
+
+  .award-form__button--primary {
+    background: #8ab4f8;
+    color: #202124;
+  }
+
+  .award-form__button--primary:hover:not(:disabled) {
+    background: #aecbfa;
+  }
+
+  .award-form__button--secondary {
+    background: #3c4043;
+    color: #9aa0a6;
+    border-color: #5f6368;
+  }
+
+  .award-form__button--secondary:hover:not(:disabled) {
+    background: #5f6368;
+    color: #e8eaed;
+  }
+}
+/* New styles for nomination sections */
+.award-form__section {
+  border: 1px solid var(--border-secondary);
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--bg-secondary);
+  transition: all 0.3s ease;
+}
+
+.award-form__section-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--yodeco-primary);
+}
+
+.award-form__field-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Mobile responsiveness for field groups */
+@media (max-width: 768px) {
+  .award-form__field-group {
+    grid-template-columns: 1fr;
+  }
+}

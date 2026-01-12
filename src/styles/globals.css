@@ -1,0 +1,208 @@
+/* YODECO Global Brand Styles */
+
+/* YODECO Brand Colors */
+:root {
+  --yodeco-primary: #398213;
+  --yodeco-secondary: #C19E33;
+  --yodeco-primary-light: rgba(57, 130, 19, 0.1);
+  --yodeco-secondary-light: rgba(193, 158, 51, 0.1);
+  --yodeco-primary-hover: #2d6b0f;
+  --yodeco-secondary-hover: #a6852b;
+  --yodeco-primary-dark: #1f4a0a;
+  --yodeco-secondary-dark: #8b7025;
+}
+
+/* Global button styles with YODECO branding */
+.btn-primary {
+  background: var(--yodeco-primary);
+  color: white;
+  border: 2px solid var(--yodeco-primary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--yodeco-primary-hover);
+  border-color: var(--yodeco-primary-hover);
+}
+
+.btn-secondary {
+  background: var(--yodeco-secondary);
+  color: white;
+  border: 2px solid var(--yodeco-secondary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--yodeco-secondary-hover);
+  border-color: var(--yodeco-secondary-hover);
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--yodeco-primary);
+  border: 2px solid var(--yodeco-primary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+  background: var(--yodeco-primary);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  color: var(--yodeco-secondary);
+  border: 2px solid var(--yodeco-secondary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--yodeco-secondary);
+  color: white;
+}
+
+/* Global text colors */
+.text-primary {
+  color: var(--yodeco-primary) !important;
+}
+
+.text-secondary {
+  color: var(--yodeco-secondary) !important;
+}
+
+/* Global background colors */
+.bg-primary {
+  background-color: var(--yodeco-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--yodeco-secondary) !important;
+}
+
+.bg-primary-light {
+  background-color: var(--yodeco-primary-light) !important;
+}
+
+.bg-secondary-light {
+  background-color: var(--yodeco-secondary-light) !important;
+}
+
+/* Global border colors */
+.border-primary {
+  border-color: var(--yodeco-primary) !important;
+}
+
+.border-secondary {
+  border-color: var(--yodeco-secondary) !important;
+}
+
+/* Hide scrollbars globally for overlay components */
+.no-scrollbar {
+  /* Hide scrollbar while maintaining scroll functionality */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* YODECO gradient backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--yodeco-primary) 0%, var(--yodeco-secondary) 100%);
+}
+
+.gradient-primary-reverse {
+  background: linear-gradient(135deg, var(--yodeco-secondary) 0%, var(--yodeco-primary) 100%);
+}
+
+/* Focus states with YODECO colors */
+.focus-primary:focus {
+  outline: 2px solid var(--yodeco-primary);
+  outline-offset: 2px;
+}
+
+.focus-secondary:focus {
+  outline: 2px solid var(--yodeco-secondary);
+  outline-offset: 2px;
+}
+
+/* Loading spinner with YODECO colors */
+.spinner-primary {
+  border: 4px solid var(--yodeco-primary-light);
+  border-top: 4px solid var(--yodeco-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-secondary {
+  border: 4px solid var(--yodeco-secondary-light);
+  border-top: 4px solid var(--yodeco-secondary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .btn-primary {
+    background: var(--yodeco-secondary);
+    border-color: var(--yodeco-secondary);
+  }
+
+  .btn-primary:hover {
+    background: var(--yodeco-secondary-hover);
+    border-color: var(--yodeco-secondary-hover);
+  }
+
+  .btn-secondary {
+    background: var(--yodeco-primary);
+    border-color: var(--yodeco-primary);
+  }
+
+  .btn-secondary:hover {
+    background: var(--yodeco-primary-hover);
+    border-color: var(--yodeco-primary-hover);
+  }
+
+  .btn-outline-primary {
+    color: var(--yodeco-secondary);
+    border-color: var(--yodeco-secondary);
+  }
+
+  .btn-outline-primary:hover {
+    background: var(--yodeco-secondary);
+    color: #202124;
+  }
+
+  .btn-outline-secondary {
+    color: var(--yodeco-primary);
+    border-color: var(--yodeco-primary);
+  }
+
+  .btn-outline-secondary:hover {
+    background: var(--yodeco-primary);
+    color: white;
+  }
+}

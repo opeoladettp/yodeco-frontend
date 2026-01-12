@@ -1,0 +1,505 @@
+.vote-bias-manager {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.vote-bias-manager__header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.vote-bias-manager__header h2 {
+  color: var(--yodeco-primary);
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.vote-bias-manager__error,
+.vote-bias-manager__error-banner {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  color: var(--error-text);
+  text-align: center;
+}
+
+.vote-bias-manager__error h3 {
+  margin: 0 0 1rem 0;
+  color: var(--error-text);
+}
+
+.vote-bias-manager__error p {
+  margin: 0;
+}
+
+/* Award Selection */
+.vote-bias-manager__award-selection {
+  margin-bottom: 3rem;
+}
+
+.vote-bias-manager__award-selection h3 {
+  color: var(--yodeco-primary);
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.vote-bias-manager__award-card {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vote-bias-manager__award-card:hover {
+  border-color: var(--yodeco-primary);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+.vote-bias-manager__award-card--selected {
+  border-color: var(--yodeco-primary);
+  background: var(--yodeco-primary-light);
+}
+
+.vote-bias-manager__award-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__award-card p {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.vote-bias-manager__award-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+/* Award Details */
+.vote-bias-manager__award-details {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid var(--border-primary);
+}
+
+.vote-bias-manager__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.vote-bias-manager__section-header h3 {
+  color: var(--yodeco-primary);
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__add-button {
+  background: var(--yodeco-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vote-bias-manager__add-button:hover:not(:disabled) {
+  background: var(--yodeco-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(57, 130, 19, 0.3);
+}
+
+.vote-bias-manager__add-button:disabled {
+  background: var(--border-primary);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.vote-bias-manager__loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Bias List */
+.vote-bias-manager__bias-list h4 {
+  color: var(--yodeco-secondary);
+  margin: 0 0 1.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.vote-bias-manager__bias-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vote-bias-manager__bias-entry {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.vote-bias-manager__bias-info {
+  flex: 1;
+}
+
+.vote-bias-manager__bias-info h5 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__bias-amount {
+  display: inline-block;
+  background: var(--yodeco-secondary-light);
+  color: var(--yodeco-secondary-hover);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.vote-bias-manager__bias-reason {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.vote-bias-manager__bias-meta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.vote-bias-manager__bias-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.vote-bias-manager__edit-button,
+.vote-bias-manager__remove-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vote-bias-manager__edit-button {
+  background: var(--yodeco-secondary);
+  color: white;
+}
+
+.vote-bias-manager__edit-button:hover:not(:disabled) {
+  background: var(--yodeco-secondary-hover);
+}
+
+.vote-bias-manager__remove-button {
+  background: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+}
+
+.vote-bias-manager__remove-button:hover:not(:disabled) {
+  background: var(--error-text);
+  color: white;
+}
+
+.vote-bias-manager__edit-button:disabled,
+.vote-bias-manager__remove-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Form Modal */
+.vote-bias-manager__form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.vote-bias-manager__form-modal {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.vote-bias-manager__form-modal::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.vote-bias-manager__form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.vote-bias-manager__form-header h4 {
+  margin: 0;
+  color: var(--yodeco-primary);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.vote-bias-manager__close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.vote-bias-manager__close-button:hover:not(:disabled) {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.vote-bias-manager__form {
+  padding: 2rem;
+}
+
+.vote-bias-manager__field {
+  margin-bottom: 1.5rem;
+}
+
+.vote-bias-manager__field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.vote-bias-manager__field input,
+.vote-bias-manager__field select,
+.vote-bias-manager__field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.vote-bias-manager__field input:focus,
+.vote-bias-manager__field select:focus,
+.vote-bias-manager__field textarea:focus {
+  outline: none;
+  border-color: var(--yodeco-primary);
+  box-shadow: 0 0 0 3px rgba(57, 130, 19, 0.1);
+}
+
+.vote-bias-manager__field textarea {
+  resize: vertical;
+  min-height: 100px;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.vote-bias-manager__field textarea::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.vote-bias-manager__field-help {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.vote-bias-manager__form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-primary);
+}
+
+.vote-bias-manager__cancel-button,
+.vote-bias-manager__submit-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.vote-bias-manager__cancel-button {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+.vote-bias-manager__cancel-button:hover:not(:disabled) {
+  background: var(--hover-bg);
+  border-color: var(--yodeco-secondary);
+  color: var(--yodeco-secondary);
+}
+
+.vote-bias-manager__submit-button {
+  background: var(--yodeco-primary);
+  color: white;
+}
+
+.vote-bias-manager__submit-button:hover:not(:disabled) {
+  background: var(--yodeco-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(57, 130, 19, 0.3);
+}
+
+.vote-bias-manager__cancel-button:disabled,
+.vote-bias-manager__submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .vote-bias-manager {
+    padding: 1rem;
+  }
+
+  .vote-bias-manager__awards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vote-bias-manager__section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .vote-bias-manager__bias-entry {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .vote-bias-manager__bias-actions {
+    align-self: flex-start;
+  }
+
+  .vote-bias-manager__form-overlay {
+    padding: 1rem;
+  }
+
+  .vote-bias-manager__form-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .vote-bias-manager__form {
+    padding: 1.5rem;
+  }
+
+  .vote-bias-manager__form-actions {
+    flex-direction: column;
+  }
+
+  .vote-bias-manager__cancel-button,
+  .vote-bias-manager__submit-button {
+    width: 100%;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .vote-bias-manager__award-card--selected {
+    background: rgba(193, 158, 51, 0.15);
+  }
+
+  .vote-bias-manager__bias-amount {
+    background: rgba(57, 130, 19, 0.15);
+    color: var(--yodeco-primary);
+  }
+
+  .vote-bias-manager__form-modal {
+    border: 1px solid var(--border-primary);
+  }
+}

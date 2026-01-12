@@ -1,0 +1,314 @@
+.my-nominations {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  overflow: hidden; /* Prevent scrollbars */
+}
+
+/* Hide scrollbars for the nominations list */
+.my-nominations__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.my-nominations__list::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.my-nominations__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.my-nominations__header h2 {
+  color: var(--yodeco-primary);
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.my-nominations__subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.my-nominations__loading,
+.my-nominations__auth-required {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.my-nominations__error {
+  text-align: center;
+  padding: 2rem;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+  color: var(--error-text);
+}
+
+.my-nominations__retry-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.my-nominations__retry-button:hover {
+  background: #b91c1c;
+}
+
+.my-nominations__empty {
+  text-align: center;
+  padding: 3rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.my-nominations__empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.my-nominations__empty h3 {
+  color: var(--yodeco-text-primary);
+  margin: 0 0 1rem 0;
+}
+
+.my-nominations__empty p {
+  color: var(--yodeco-text-secondary);
+  margin: 0;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.my-nominations__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.my-nominations__card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  transition: box-shadow 0.2s ease;
+}
+
+.my-nominations__card:hover {
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+.my-nominations__card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.my-nominations__nominee-info {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.my-nominations__nominee-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+}
+
+.my-nominations__nominee-details {
+  flex: 1;
+}
+
+.my-nominations__nominee-name {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--yodeco-text-primary);
+}
+
+.my-nominations__award-title {
+  margin: 0 0 0.25rem 0;
+  font-weight: 500;
+  color: var(--yodeco-primary);
+}
+
+.my-nominations__category {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--yodeco-text-secondary);
+}
+
+.my-nominations__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.my-nominations__status--pending {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.my-nominations__status--approved {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.my-nominations__status--rejected {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #ef4444;
+}
+
+.my-nominations__status-icon {
+  font-size: 1rem;
+}
+
+.my-nominations__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.my-nominations__bio {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.my-nominations__bio h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--yodeco-text-primary);
+}
+
+.my-nominations__bio p {
+  margin: 0;
+  color: var(--yodeco-text-secondary);
+  line-height: 1.5;
+}
+
+.my-nominations__metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.my-nominations__date,
+.my-nominations__approver {
+  color: var(--yodeco-text-secondary);
+}
+
+.my-nominations__rejection-reason {
+  background: #fef2f2;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}
+
+.my-nominations__rejection-reason strong {
+  color: #dc2626;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.my-nominations__rejection-reason p {
+  margin: 0;
+  color: #991b1b;
+}
+
+.my-nominations__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.my-nominations__page-button {
+  padding: 0.5rem 1rem;
+  background: var(--yodeco-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.my-nominations__page-button:hover:not(:disabled) {
+  background: var(--yodeco-primary-dark);
+}
+
+.my-nominations__page-button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+.my-nominations__page-info {
+  color: var(--yodeco-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .my-nominations {
+    padding: 1rem;
+  }
+  
+  .my-nominations__card {
+    padding: 1rem;
+  }
+  
+  .my-nominations__card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .my-nominations__nominee-info {
+    margin-bottom: 1rem;
+  }
+  
+  .my-nominations__status {
+    align-self: flex-start;
+  }
+  
+  .my-nominations__pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

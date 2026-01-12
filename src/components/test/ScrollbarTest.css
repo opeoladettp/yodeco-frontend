@@ -1,0 +1,139 @@
+.scrollbar-test {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.scrollbar-test h2 {
+  color: var(--yodeco-primary);
+  margin-bottom: 1rem;
+}
+
+.scrollbar-test h3 {
+  color: var(--yodeco-secondary);
+  margin: 2rem 0 1rem 0;
+}
+
+.scrollbar-test__section {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.scrollbar-test__vertical-container {
+  height: 200px;
+  border: 2px solid var(--yodeco-primary);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-primary);
+  
+  /* Hide scrollbar while maintaining scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.scrollbar-test__vertical-container::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.scrollbar-test__item {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--yodeco-primary-light);
+  border-radius: 4px;
+  border-left: 4px solid var(--yodeco-primary);
+}
+
+.scrollbar-test__modal {
+  border: 2px solid var(--yodeco-secondary);
+  border-radius: 12px;
+  background: var(--bg-primary);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.scrollbar-test__modal-content {
+  padding: 1.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Hide scrollbar while maintaining scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.scrollbar-test__modal-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.scrollbar-test__modal-content h4 {
+  color: var(--yodeco-secondary);
+  margin-top: 0;
+}
+
+.scrollbar-test__modal-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.scrollbar-test__textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--yodeco-primary);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  resize: vertical;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Hide scrollbar while maintaining scroll functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.scrollbar-test__textarea::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.scrollbar-test__textarea:focus {
+  outline: none;
+  border-color: var(--yodeco-secondary);
+  box-shadow: 0 0 0 3px rgba(193, 158, 51, 0.2);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .scrollbar-test__item {
+    background: var(--yodeco-secondary-light);
+    border-left-color: var(--yodeco-secondary);
+  }
+  
+  .scrollbar-test__modal {
+    border-color: var(--yodeco-primary);
+  }
+  
+  .scrollbar-test__textarea {
+    border-color: var(--yodeco-secondary);
+  }
+  
+  .scrollbar-test__textarea:focus {
+    border-color: var(--yodeco-primary);
+    box-shadow: 0 0 0 3px rgba(57, 130, 19, 0.2);
+  }
+}

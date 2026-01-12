@@ -1,0 +1,318 @@
+.public-nomination-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px var(--shadow-light);
+  border: 1px solid var(--border-secondary);
+  transition: all 0.3s ease;
+  overflow: hidden; /* Prevent any scrollbars */
+  max-height: none; /* Allow natural height */
+}
+
+.public-nomination-form__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.public-nomination-form__header h3 {
+  color: var(--yodeco-primary);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.public-nomination-form__subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.public-nomination-form__loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+}
+
+.public-nomination-form__error {
+  text-align: center;
+  padding: 2rem;
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+  color: var(--error-text);
+}
+
+.public-nomination-form__error h3 {
+  margin: 0 0 1rem 0;
+  color: var(--error-text);
+}
+
+.public-nomination-form__error p {
+  margin: 0.5rem 0;
+}
+
+.public-nomination-form__error-banner {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--error-text);
+  text-align: center;
+}
+
+.public-nomination-form__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.public-nomination-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.public-nomination-form__label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.public-nomination-form__input,
+.public-nomination-form__textarea {
+  padding: 0.75rem;
+  border: 2px solid var(--border-primary);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.public-nomination-form__input:focus,
+.public-nomination-form__textarea:focus {
+  outline: none;
+  border-color: var(--yodeco-primary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.public-nomination-form__input--error,
+.public-nomination-form__textarea--error {
+  border-color: #dc2626;
+}
+
+.public-nomination-form__textarea {
+  resize: vertical;
+  min-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.public-nomination-form__textarea::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.public-nomination-form__help {
+  font-size: 0.85rem;
+  color: var(--yodeco-text-secondary);
+  margin-top: 0.25rem;
+}
+
+.public-nomination-form__error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.public-nomination-form__info {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.public-nomination-form__info h4 {
+  margin: 0 0 1rem 0;
+  color: var(--yodeco-primary);
+  font-size: 1rem;
+}
+
+.public-nomination-form__info ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.public-nomination-form__info li {
+  margin-bottom: 0.5rem;
+  color: var(--yodeco-text-secondary);
+  font-size: 0.9rem;
+}
+
+.public-nomination-form__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.public-nomination-form__button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.public-nomination-form__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.public-nomination-form__button--secondary {
+  background: #f3f4f6;
+  color: var(--yodeco-text-primary);
+  border: 1px solid #d1d5db;
+}
+
+.public-nomination-form__button--secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.public-nomination-form__button--primary {
+  background: var(--yodeco-primary);
+  color: white;
+}
+
+.public-nomination-form__button--primary:hover:not(:disabled) {
+  background: var(--yodeco-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.public-nomination-form__auth-notice {
+  text-align: center;
+  padding: 1rem;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  color: #92400e;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .public-nomination-form {
+    background: var(--bg-primary);
+    border-color: var(--border-primary);
+  }
+
+  .public-nomination-form__header h3 {
+    color: var(--yodeco-secondary);
+  }
+
+  .public-nomination-form__subtitle {
+    color: var(--text-secondary);
+  }
+
+  .public-nomination-form__loading {
+    color: var(--text-secondary);
+  }
+
+  .public-nomination-form__label {
+    color: var(--text-primary);
+  }
+
+  .public-nomination-form__input,
+  .public-nomination-form__textarea {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-primary);
+  }
+
+  .public-nomination-form__input:focus,
+  .public-nomination-form__textarea:focus {
+    border-color: var(--yodeco-secondary);
+    box-shadow: 0 0 0 3px rgba(193, 158, 51, 0.2);
+  }
+
+  .public-nomination-form__help {
+    color: var(--text-secondary);
+  }
+
+  .public-nomination-form__info {
+    background: var(--bg-tertiary);
+    border-color: var(--border-primary);
+  }
+
+  .public-nomination-form__info h4 {
+    color: var(--yodeco-secondary);
+  }
+
+  .public-nomination-form__info li {
+    color: var(--text-secondary);
+  }
+
+  .public-nomination-form__actions {
+    border-top-color: var(--border-primary);
+  }
+
+  .public-nomination-form__button--secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+  }
+
+  .public-nomination-form__button--secondary:hover:not(:disabled) {
+    background: var(--hover-bg);
+    border-color: var(--yodeco-secondary);
+    color: var(--yodeco-secondary);
+    box-shadow: 0 2px 4px rgba(193, 158, 51, 0.2);
+  }
+
+  .public-nomination-form__button--primary {
+    background: var(--yodeco-secondary);
+    color: var(--bg-primary);
+  }
+
+  .public-nomination-form__button--primary:hover:not(:disabled) {
+    background: var(--yodeco-secondary-hover);
+    box-shadow: 0 4px 8px rgba(193, 158, 51, 0.3);
+  }
+
+  .public-nomination-form__auth-notice {
+    background: rgba(193, 158, 51, 0.1);
+    border-color: var(--yodeco-secondary);
+    color: var(--yodeco-secondary);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .public-nomination-form {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .public-nomination-form__actions {
+    flex-direction: column;
+  }
+  
+  .public-nomination-form__button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,832 @@
+.system-monitoring {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.system-monitoring__loading,
+.system-monitoring__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.system-monitoring__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4285f4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.system-monitoring__loading p {
+  margin: 0;
+  color: #5f6368;
+  font-size: 16px;
+}
+
+.system-monitoring__error {
+  color: #d93025;
+}
+
+.system-monitoring__error h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.system-monitoring__error p {
+  margin: 0 0 24px 0;
+  color: #5f6368;
+  font-size: 16px;
+}
+
+.system-monitoring__retry-button {
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.system-monitoring__retry-button:hover {
+  background: #3367d6;
+}
+
+.system-monitoring__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.system-monitoring__header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.system-monitoring__last-updated {
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.system-monitoring__tabs {
+  display: flex;
+  border-bottom: 1px solid #e8eaed;
+  margin-bottom: 24px;
+}
+
+.system-monitoring__tab {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5f6368;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.system-monitoring__tab:hover {
+  color: #4285f4;
+}
+
+.system-monitoring__tab--active {
+  color: #4285f4;
+  border-bottom-color: #4285f4;
+}
+
+.system-monitoring__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.system-monitoring__stat-card {
+  background: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.system-monitoring__stat-card:hover {
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.1);
+}
+
+.system-monitoring__stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.system-monitoring__stat-icon--users {
+  background: rgba(66, 133, 244, 0.1);
+  color: #4285f4;
+}
+
+.system-monitoring__stat-icon--votes {
+  background: rgba(52, 168, 83, 0.1);
+  color: #34a853;
+}
+
+.system-monitoring__stat-icon--categories {
+  background: rgba(251, 188, 4, 0.1);
+  color: #fbbc04;
+}
+
+.system-monitoring__stat-icon--awards {
+  background: rgba(234, 67, 53, 0.1);
+  color: #ea4335;
+}
+
+.system-monitoring__stat-icon--nominees {
+  background: rgba(156, 39, 176, 0.1);
+  color: #9c27b0;
+}
+
+.system-monitoring__stat-icon--active {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.system-monitoring__stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.system-monitoring__stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #C19E33; /* YODECO brand gold color */
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.system-monitoring__stat-label {
+  font-size: 14px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.system-monitoring__no-stats,
+.system-monitoring__no-logs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  color: #9aa0a6;
+  padding: 40px 20px;
+}
+
+.system-monitoring__no-stats h3,
+.system-monitoring__no-logs h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #5f6368;
+}
+
+.system-monitoring__no-stats p,
+.system-monitoring__no-logs p {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.system-monitoring__audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.system-monitoring__audit-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.system-monitoring__audit-item:hover {
+  border-color: #4285f4;
+  box-shadow: 0 2px 4px rgba(66, 133, 244, 0.1);
+}
+
+.system-monitoring__action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.system-monitoring__action-icon--success {
+  background: rgba(52, 168, 83, 0.1);
+  color: #34a853;
+}
+
+.system-monitoring__action-icon--primary {
+  background: rgba(66, 133, 244, 0.1);
+  color: #4285f4;
+}
+
+.system-monitoring__action-icon--info {
+  background: rgba(251, 188, 4, 0.1);
+  color: #fbbc04;
+}
+
+.system-monitoring__action-icon--neutral {
+  background: rgba(95, 99, 104, 0.1);
+  color: #5f6368;
+}
+
+.system-monitoring__action-icon--default {
+  background: rgba(156, 39, 176, 0.1);
+  color: #9c27b0;
+}
+
+.system-monitoring__audit-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.system-monitoring__audit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.system-monitoring__audit-action {
+  font-weight: 500;
+  color: #202124;
+  text-transform: capitalize;
+}
+
+.system-monitoring__audit-time {
+  font-size: 12px;
+  color: #9aa0a6;
+  white-space: nowrap;
+}
+
+.system-monitoring__audit-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.system-monitoring__audit-description {
+  font-size: 14px;
+  color: #5f6368;
+  line-height: 1.4;
+}
+
+.system-monitoring__audit-user,
+.system-monitoring__audit-ip {
+  font-size: 12px;
+  color: #9aa0a6;
+  font-family: 'Courier New', monospace;
+}
+
+/* Health Summary Styles */
+.system-monitoring__health-summary {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+}
+
+.system-monitoring__health-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.system-monitoring__health-status--healthy {
+  color: #34a853;
+}
+
+.system-monitoring__health-status--degraded {
+  color: #fbbc04;
+}
+
+.system-monitoring__health-status--unhealthy {
+  color: #ea4335;
+}
+
+.system-monitoring__health-indicator {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: currentColor;
+  color: white;
+}
+
+.system-monitoring__health-text {
+  flex: 1;
+}
+
+.system-monitoring__health-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.system-monitoring__health-subtitle {
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.system-monitoring__component-status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.system-monitoring__component {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: white;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+}
+
+.system-monitoring__component-name {
+  font-weight: 500;
+  color: #202124;
+}
+
+.system-monitoring__component-indicator {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.system-monitoring__component-indicator--healthy {
+  background: rgba(52, 168, 83, 0.1);
+  color: #34a853;
+}
+
+.system-monitoring__component-indicator--degraded {
+  background: rgba(251, 188, 4, 0.1);
+  color: #fbbc04;
+}
+
+.system-monitoring__component-indicator--unhealthy {
+  background: rgba(234, 67, 53, 0.1);
+  color: #ea4335;
+}
+
+.system-monitoring__component-indicator--warning {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+/* Performance Metrics Styles */
+.system-monitoring__performance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.system-monitoring__performance-section {
+  background: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.system-monitoring__performance-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #202124;
+}
+
+.system-monitoring__performance-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.system-monitoring__performance-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.system-monitoring__performance-stat:last-child {
+  border-bottom: none;
+}
+
+.system-monitoring__performance-label {
+  font-size: 14px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.system-monitoring__performance-value {
+  font-size: 14px;
+  color: #202124;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.system-monitoring__no-performance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  color: #9aa0a6;
+  padding: 40px 20px;
+}
+
+.system-monitoring__no-performance h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #5f6368;
+}
+
+.system-monitoring__no-performance p {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Alerts Styles */
+.system-monitoring__alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.system-monitoring__alert {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+
+.system-monitoring__alert--critical {
+  background: rgba(234, 67, 53, 0.05);
+  border-color: rgba(234, 67, 53, 0.2);
+}
+
+.system-monitoring__alert--warning {
+  background: rgba(251, 188, 4, 0.05);
+  border-color: rgba(251, 188, 4, 0.2);
+}
+
+.system-monitoring__alert--info {
+  background: rgba(66, 133, 244, 0.05);
+  border-color: rgba(66, 133, 244, 0.2);
+}
+
+.system-monitoring__alert-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.system-monitoring__alert--critical .system-monitoring__alert-icon {
+  background: rgba(234, 67, 53, 0.1);
+  color: #ea4335;
+}
+
+.system-monitoring__alert--warning .system-monitoring__alert-icon {
+  background: rgba(251, 188, 4, 0.1);
+  color: #fbbc04;
+}
+
+.system-monitoring__alert--info .system-monitoring__alert-icon {
+  background: rgba(66, 133, 244, 0.1);
+  color: #4285f4;
+}
+
+.system-monitoring__alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.system-monitoring__alert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.system-monitoring__alert-type {
+  font-weight: 500;
+  color: #202124;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.system-monitoring__alert-time {
+  font-size: 12px;
+  color: #9aa0a6;
+  white-space: nowrap;
+}
+
+.system-monitoring__alert-message {
+  font-size: 14px;
+  color: #5f6368;
+  line-height: 1.4;
+}
+
+.system-monitoring__no-alerts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  color: #9aa0a6;
+  padding: 40px 20px;
+}
+
+.system-monitoring__no-alerts h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #34a853;
+}
+
+.system-monitoring__no-alerts p {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .system-monitoring {
+    padding: 20px;
+  }
+
+  .system-monitoring__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .system-monitoring__stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .system-monitoring__stat-card {
+    padding: 16px;
+  }
+
+  .system-monitoring__stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .system-monitoring__stat-number {
+    font-size: 24px;
+  }
+
+  .system-monitoring__audit-item {
+    padding: 12px;
+  }
+
+  .system-monitoring__audit-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .system-monitoring__audit-time {
+    align-self: flex-end;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .system-monitoring {
+    background: #2d2e30;
+    border: 1px solid #5f6368;
+  }
+
+  .system-monitoring__loading p {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__error {
+    color: #f28b82;
+  }
+
+  .system-monitoring__error h3 {
+    color: #f28b82;
+  }
+
+  .system-monitoring__error p {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__retry-button {
+    background: #8ab4f8;
+    color: #202124;
+  }
+
+  .system-monitoring__retry-button:hover {
+    background: #aecbfa;
+  }
+
+  .system-monitoring__header h2 {
+    color: #e8eaed;
+  }
+
+  .system-monitoring__last-updated {
+    color: #5f6368;
+  }
+
+  .system-monitoring__tabs {
+    border-bottom-color: #5f6368;
+  }
+
+  .system-monitoring__tab {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__tab:hover {
+    color: #8ab4f8;
+  }
+
+  .system-monitoring__tab--active {
+    color: #8ab4f8;
+    border-bottom-color: #8ab4f8;
+  }
+
+  .system-monitoring__stat-card {
+    background: #3c4043;
+    border-color: #5f6368;
+  }
+
+  .system-monitoring__stat-card:hover {
+    border-color: #8ab4f8;
+    box-shadow: 0 2px 8px rgba(138, 180, 248, 0.1);
+  }
+
+  .system-monitoring__stat-icon--users {
+    background: rgba(138, 180, 248, 0.2);
+    color: #8ab4f8;
+  }
+
+  .system-monitoring__stat-icon--votes {
+    background: rgba(129, 201, 149, 0.2);
+    color: #81c995;
+  }
+
+  .system-monitoring__stat-icon--categories {
+    background: rgba(253, 216, 53, 0.2);
+    color: #fdd835;
+  }
+
+  .system-monitoring__stat-icon--awards {
+    background: rgba(242, 139, 130, 0.2);
+    color: #f28b82;
+  }
+
+  .system-monitoring__stat-icon--nominees {
+    background: rgba(206, 147, 216, 0.2);
+    color: #ce93d8;
+  }
+
+  .system-monitoring__stat-icon--active {
+    background: rgba(255, 183, 77, 0.2);
+    color: #ffb74d;
+  }
+
+  .system-monitoring__stat-number {
+    color: #C19E33; /* YODECO brand gold color */
+  }
+
+  .system-monitoring__stat-label {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__no-stats h3,
+  .system-monitoring__no-logs h3 {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__no-stats p,
+  .system-monitoring__no-logs p {
+    color: #5f6368;
+  }
+
+  .system-monitoring__audit-item {
+    background: #3c4043;
+    border-color: #5f6368;
+  }
+
+  .system-monitoring__audit-item:hover {
+    border-color: #8ab4f8;
+    box-shadow: 0 2px 4px rgba(138, 180, 248, 0.1);
+  }
+
+  .system-monitoring__action-icon--success {
+    background: rgba(129, 201, 149, 0.2);
+    color: #81c995;
+  }
+
+  .system-monitoring__action-icon--primary {
+    background: rgba(138, 180, 248, 0.2);
+    color: #8ab4f8;
+  }
+
+  .system-monitoring__action-icon--info {
+    background: rgba(253, 216, 53, 0.2);
+    color: #fdd835;
+  }
+
+  .system-monitoring__action-icon--neutral {
+    background: rgba(154, 160, 166, 0.2);
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__action-icon--default {
+    background: rgba(206, 147, 216, 0.2);
+    color: #ce93d8;
+  }
+
+  .system-monitoring__audit-action {
+    color: #e8eaed;
+  }
+
+  .system-monitoring__audit-time {
+    color: #5f6368;
+  }
+
+  .system-monitoring__audit-description {
+    color: #9aa0a6;
+  }
+
+  .system-monitoring__audit-user,
+  .system-monitoring__audit-ip {
+    color: #5f6368;
+  }
+}
