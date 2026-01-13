@@ -101,6 +101,13 @@ api.interceptors.request.use(
     // Add request ID for tracking
     config.headers['X-Request-ID'] = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
+    // Add Authorization header if token exists in localStorage (fallback for cross-subdomain issues)
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+      console.log('🔑 Adding Authorization header from localStorage');
+    }
+    
     // Add timestamp
     config.metadata = { startTime: Date.now() };
     

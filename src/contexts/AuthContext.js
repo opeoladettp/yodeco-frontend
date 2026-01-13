@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
     // Check if this is an OAuth callback
     const urlParams = new URLSearchParams(window.location.search);
     const loginStatus = urlParams.get('login');
+    const tokenFromUrl = urlParams.get('token');
     
     if (loginStatus === 'success') {
       console.log('🔄 OAuth callback detected, checking authentication status...');
@@ -99,6 +100,12 @@ export const AuthProvider = ({ children }) => {
       // Clear the URL parameters
       const newUrl = window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
+      
+      // If we have a token in URL, store it and use it
+      if (tokenFromUrl) {
+        console.log('🎯 Token received from OAuth callback, storing locally');
+        localStorage.setItem('accessToken', tokenFromUrl);
+      }
       
       // Check authentication status after OAuth callback
       await checkAuthStatus();
@@ -138,11 +145,15 @@ export const AuthProvider = ({ children }) => {
     
     // Build OAuth URL carefully to avoid double slashes
     const baseUrl = process.env.REACT_APP_API_URL || '/api';
-    const oauthUrl = `${baseUrl.replace(/\/$/, '')}/auth/google`; // Remove trailing slash if exists
+    
+    // Get current URL to pass as redirect parameter
+    const currentUrl = window.location.origin; // e.g., https://www.yodeco.duckdns.org
+    const oauthUrl = `${baseUrl.replace(/\/$/, '')}/auth/google?redirect_origin=${encodeURIComponent(currentUrl)}`; // Remove trailing slash if exists
     
     console.log('🔍 Frontend OAuth Debug:');
     console.log('REACT_APP_API_URL:', process.env.REACT_APP_API_URL);
     console.log('Base URL (cleaned):', baseUrl.replace(/\/$/, ''));
+    console.log('Current URL origin:', currentUrl);
     console.log('Final OAuth URL:', oauthUrl);
     
     // Redirect to Google OAuth endpoint
