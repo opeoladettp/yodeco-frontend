@@ -7,12 +7,18 @@
 export const getImageUrl = (imageUrl) => {
   if (!imageUrl) return null;
   
-  // If it's already a full URL, return as is
+  // If it's already a full URL (including S3 URLs), return as is
   if (imageUrl.startsWith('http')) {
     return imageUrl;
   }
   
-  // Use backend media download route for S3 object keys
+  // If it's an S3 object key, construct the S3 URL
+  if (imageUrl.includes('uploads/')) {
+    const cdnUrl = process.env.REACT_APP_CDN_URL || 'https://bvp-storage.s3.eu-north-1.amazonaws.com';
+    return `${cdnUrl}/${imageUrl}`;
+  }
+  
+  // Use backend media download route for other cases
   const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
   return `${apiBaseUrl}/media/download/${imageUrl}`;
 };

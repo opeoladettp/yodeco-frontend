@@ -98,6 +98,7 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
+  display: block;
 }
 
 .navigation__brand-text {
@@ -197,6 +198,7 @@
   height: 28px;
   object-fit: contain;
   filter: brightness(0) invert(1);
+  display: block;
 }
 
 .navigation__drawer-title {
@@ -437,15 +439,29 @@
 
   /* Hide desktop menu, show mobile dropdown */
   .navigation__center--desktop {
-    display: none;
+    display: none !important;
   }
 
   .navigation__center--mobile {
-    display: flex;
+    display: flex !important;
+  }
+
+  /* Ensure hamburger menu is visible for authenticated users */
+  .navigation__menu-button {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
   }
 
   .navigation__drawer {
     width: 280px;
+  }
+
+  /* Ensure mobile dropdown is properly positioned */
+  .navigation__mobile-dropdown-menu {
+    left: 0;
+    transform: none;
+    min-width: 220px;
   }
 }
 
@@ -461,6 +477,7 @@
 /* Mobile Dropdown Styles */
 .navigation__mobile-dropdown {
   position: relative;
+  z-index: 100;
 }
 
 .navigation__mobile-menu-button {
@@ -476,6 +493,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .navigation__mobile-menu-button:hover {
@@ -485,6 +503,7 @@
 
 .navigation__dropdown-arrow {
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .navigation__dropdown-arrow--open {
@@ -563,6 +582,8 @@
 
   .navigation__mobile-dropdown-menu {
     min-width: 180px;
+    left: 0;
+    transform: none;
   }
 
   .navigation__mobile-dropdown-link {
@@ -573,6 +594,12 @@
   .navigation__drawer {
     width: 100%;
     max-width: 280px;
+  }
+
+  /* Ensure hamburger is visible on very small screens */
+  .navigation__menu-button {
+    width: 32px;
+    height: 32px;
   }
 }
 

@@ -41,6 +41,12 @@ const NomineeCard = ({
   };
 
   const imageUrl = getImageUrl(nominee.imageUrl);
+  
+  console.log('NomineeCard image debug:', {
+    originalUrl: nominee.imageUrl,
+    processedUrl: imageUrl,
+    nomineeName: nominee.name
+  });
 
   return (
     <div 

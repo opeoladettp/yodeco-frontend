@@ -55,9 +55,20 @@ const Navigation = () => {
                   alt="YODECO Logo" 
                   className="navigation__logo-image"
                   onError={(e) => {
-                    // Fallback if logo fails to load
+                    console.log('Logo failed to load, showing fallback');
                     e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'inline-block';
+                    const fallback = e.target.parentNode.querySelector('.navigation__logo-fallback');
+                    if (fallback) {
+                      fallback.style.display = 'inline-block';
+                    }
+                  }}
+                  onLoad={(e) => {
+                    console.log('Logo loaded successfully');
+                    const fallback = e.target.parentNode.querySelector('.navigation__logo-fallback');
+                    if (fallback) {
+                      fallback.style.display = 'none';
+                    }
+                    e.target.style.display = 'block';
                   }}
                 />
                 <div className="navigation__logo-fallback" style={{ display: 'none' }}>
@@ -176,8 +187,20 @@ const Navigation = () => {
                   alt="YODECO Logo" 
                   className="navigation__drawer-logo-image"
                   onError={(e) => {
+                    console.log('Drawer logo failed to load, showing fallback');
                     e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'inline-block';
+                    const fallback = e.target.parentNode.querySelector('.navigation__drawer-logo-fallback');
+                    if (fallback) {
+                      fallback.style.display = 'inline-block';
+                    }
+                  }}
+                  onLoad={(e) => {
+                    console.log('Drawer logo loaded successfully');
+                    const fallback = e.target.parentNode.querySelector('.navigation__drawer-logo-fallback');
+                    if (fallback) {
+                      fallback.style.display = 'none';
+                    }
+                    e.target.style.display = 'block';
                   }}
                 />
                 <div className="navigation__drawer-logo-fallback" style={{ display: 'none' }}>
