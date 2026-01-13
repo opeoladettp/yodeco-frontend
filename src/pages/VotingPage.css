@@ -700,3 +700,70 @@
     color: #5f6368;
   }
 }
+/* Facial Verification Modal */
+.facial-verification-modal {
+  max-width: 700px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+  border-radius: 16px;
+}
+
+.facial-verification-modal .facial-verification {
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  border-radius: 16px;
+}
+
+/* Modal overlay improvements for facial verification */
+.voting-page__modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.voting-page__modal-content {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Responsive adjustments for facial verification */
+@media (max-width: 768px) {
+  .facial-verification-modal {
+    width: 95vw;
+    max-width: none;
+    margin: 0.5rem;
+  }
+  
+  .voting-page__modal-overlay {
+    padding: 0.5rem;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .voting-page__modal-overlay {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .voting-page__modal-content {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+}

@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.1",
     "axios": "^1.6.2",
+    "face-api.js": "^0.22.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
@@ -16,9 +17,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:network": "cross-env HOST=0.0.0.0 DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false --passWithNoTests",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "download-models": "node scripts/download-models.js",
+    "postinstall": "npm run download-models"
   },
   "eslintConfig": {
     "extends": [
@@ -38,5 +42,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
 }

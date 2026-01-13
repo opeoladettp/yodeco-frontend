@@ -143,14 +143,21 @@ const AwardForm = ({
       return;
     }
 
-    // Convert date strings to Date objects for submission
+    // Convert date strings to ISO strings for submission (only if not empty)
     const submissionData = {
       ...formData,
-      nominationStartDate: formData.nominationStartDate ? new Date(formData.nominationStartDate) : null,
-      nominationEndDate: formData.nominationEndDate ? new Date(formData.nominationEndDate) : null,
-      votingStartDate: formData.votingStartDate ? new Date(formData.votingStartDate) : null,
-      votingEndDate: formData.votingEndDate ? new Date(formData.votingEndDate) : null
+      nominationStartDate: formData.nominationStartDate ? new Date(formData.nominationStartDate).toISOString() : undefined,
+      nominationEndDate: formData.nominationEndDate ? new Date(formData.nominationEndDate).toISOString() : undefined,
+      votingStartDate: formData.votingStartDate ? new Date(formData.votingStartDate).toISOString() : undefined,
+      votingEndDate: formData.votingEndDate ? new Date(formData.votingEndDate).toISOString() : undefined
     };
+
+    // Remove undefined values to avoid sending them to the backend
+    Object.keys(submissionData).forEach(key => {
+      if (submissionData[key] === undefined) {
+        delete submissionData[key];
+      }
+    });
 
     onSubmit(submissionData);
   };

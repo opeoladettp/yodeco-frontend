@@ -1,0 +1,553 @@
+.facial-verification {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+}
+
+.verification-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.verification-header h3 {
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.verification-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.verification-content {
+  margin-bottom: 2rem;
+}
+
+/* Initialization Status */
+.initialization-status {
+  text-align: center;
+  padding: 2rem;
+}
+
+.initialization-progress {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.initialization-status p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Start Verification */
+.start-verification {
+  text-align: center;
+  padding: 2rem;
+}
+
+.verification-icon {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.verification-info {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.verification-info h4 {
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.verification-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.verification-info li {
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.verification-info li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.start-camera-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.start-camera-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Camera Container */
+.camera-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.camera-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.camera-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.face-guide {
+  position: relative;
+  width: 200px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.face-outline {
+  width: 180px;
+  height: 220px;
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.face-outline.success {
+  border-color: var(--success-color);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+.face-outline.warning {
+  border-color: var(--warning-color);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+}
+
+.face-outline.error {
+  border-color: var(--error-color);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.quality-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quality-indicator.success {
+  background: rgba(34, 197, 94, 0.9);
+  color: white;
+}
+
+.quality-indicator.warning {
+  background: rgba(251, 191, 36, 0.9);
+  color: white;
+}
+
+.quality-indicator.error {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+.quality-message {
+  display: block;
+}
+
+/* Processing Status */
+.processing-status {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--bg-secondary);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.processing-status p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Success Status */
+.success-status {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success-icon {
+  color: var(--success-color);
+  margin-bottom: 1rem;
+}
+
+.success-status p {
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.success-details {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+}
+
+/* Error Status */
+.error-status {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-icon {
+  color: var(--error-color);
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  margin: 0 0 1.5rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.retry-btn {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+/* Verification Actions */
+.verification-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.capture-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.capture-btn:hover:not(.disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.capture-btn.disabled {
+  background: var(--bg-secondary);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cancel-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-color);
+}
+
+/* Privacy Note */
+.verification-privacy {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.privacy-note svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .facial-verification {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .verification-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .camera-container {
+    max-width: 100%;
+  }
+  
+  .face-guide {
+    width: 160px;
+    height: 200px;
+  }
+  
+  .face-outline {
+    width: 140px;
+    height: 180px;
+  }
+  
+  .verification-actions {
+    flex-direction: column;
+  }
+  
+  .capture-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+
+/* Dark Mode Specific Adjustments */
+@media (prefers-color-scheme: dark) {
+  .facial-verification {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  .camera-container {
+    border: 1px solid var(--border-color);
+  }
+  
+  .face-outline {
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .quality-indicator {
+    backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+.camera-debug-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.camera-debug-info small {
+  color: #ccc;
+}
+
+/* Manual Video Controls */
+.manual-video-controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.manual-play-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.manual-play-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.manual-play-btn:active {
+  transform: translateY(0);
+}
+
+/* Force Detection Button */
+.force-detection-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid var(--warning-color);
+  background: var(--warning-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.force-detection-btn:hover {
+  background: var(--warning-hover, #d97706);
+  transform: translateY(-1px);
+}
+
+/* Test Detection Button */
+.test-detection-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #f59e0b;
+  background: #f59e0b;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.test-detection-btn:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+}
+
+/* Error Actions */
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.refresh-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Video Loading State */
+.video-loading {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.video-loading .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--bg-secondary);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1.5rem auto;
+}
+
+.video-loading p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.95rem;
+}
