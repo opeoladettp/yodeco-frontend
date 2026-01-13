@@ -110,8 +110,15 @@ const VotingPage = () => {
         nomineeId: selectedNominee._id
       };
 
+      // Generate unique idempotency key for this vote attempt
+      const idempotencyKey = `vote_${selectedAward._id}_${selectedNominee._id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
       // Submit vote without biometric verification
-      await api.post('/votes', voteData);
+      await api.post('/votes', voteData, {
+        headers: {
+          'Idempotency-Key': idempotencyKey
+        }
+      });
       
       // Update user votes
       setUserVotes(prev => ({

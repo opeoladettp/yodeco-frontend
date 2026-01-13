@@ -232,9 +232,13 @@ export const submitVoteWithBiometric = async (voteData) => {
 
     // Submit vote with biometric verification header and retry logic
     const response = await retryRequest(async () => {
+      // Generate unique idempotency key for this vote attempt
+      const idempotencyKey = `vote_biometric_${voteData.awardId}_${voteData.nomineeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
       return await api.post('/votes', voteData, {
         headers: {
-          'X-Biometric-Verified': 'true'
+          'X-Biometric-Verified': 'true',
+          'Idempotency-Key': idempotencyKey
         }
       });
     });
