@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext'; // Enable this to check authentication
 import { 
   NomineeCard, 
-  BiometricVerification, 
   VoteConfirmation, 
   VotingHistory, 
   VoteCountDisplay 
 } from '../components/voting';
-import FacialVerification from '../components/voting/FacialVerification';
 import { PublicNominationForm } from '../components/nominations';
-import { submitVoteWithBiometric } from '../services/api';
 import api from '../services/api';
 import './VotingPage.css';
 
@@ -26,15 +23,12 @@ const VotingPage = () => {
   const [collapsedAwards, setCollapsedAwards] = useState({});
   
   // Modal states
-  const [showBiometricVerification, setShowBiometricVerification] = useState(false);
-  const [showFacialVerification, setShowFacialVerification] = useState(false);
   const [showVoteConfirmation, setShowVoteConfirmation] = useState(false);
   const [showVotingHistory, setShowVotingHistory] = useState(false);
   const [showNominationForm, setShowNominationForm] = useState(false);
   const [selectedAwardForNomination, setSelectedAwardForNomination] = useState(null);
   const [isSubmittingVote, setIsSubmittingVote] = useState(false);
   const [isSubmittingNomination, setIsSubmittingNomination] = useState(false);
-  // Removed unused biometricVerificationData variable
 
   useEffect(() => {
     fetchVotingData();
@@ -102,63 +96,12 @@ const VotingPage = () => {
     setSelectedNominee(nominee);
     setSelectedAward(award);
     
-    // Show facial verification instead of vote confirmation
-    setShowFacialVerification(true);
-  };
-
-  const handleFacialVerificationComplete = async (verificationData) => {
-    setShowFacialVerification(false);
-    // setBiometricVerificationData(verificationData); // Removed unused variable
-    setIsSubmittingVote(true);
-
-    try {
-      const voteData = {
-        awardId: selectedAward._id,
-        nomineeId: selectedNominee._id,
-        biometricVerification: verificationData
-      };
-
-      // Submit vote with biometric verification data
-      await api.post('/votes', voteData);
-      
-      // Update user votes
-      setUserVotes(prev => ({
-        ...prev,
-        [selectedAward._id]: {
-          awardId: selectedAward._id,
-          nomineeId: selectedNominee._id,
-          nominee: selectedNominee,
-          award: selectedAward,
-          timestamp: new Date().toISOString(),
-          biometricVerified: true
-        }
-      }));
-
-      // Reset selection
-      setSelectedNominee(null);
-      // setBiometricVerificationData(null); // Removed unused variable
-      
-      // Show success message
-      alert('Your vote has been successfully submitted with biometric verification!');
-      
-    } catch (error) {
-      console.error('Vote submission error:', error);
-      alert(error.response?.data?.error?.message || 'Failed to submit vote. Please try again.');
-    } finally {
-      setIsSubmittingVote(false);
-    }
-  };
-
-  const handleFacialVerificationCancel = () => {
-    setShowFacialVerification(false);
-    setSelectedNominee(null);
-    setSelectedAward(null);
-    // setBiometricVerificationData(null); // Removed unused variable
+    // Show vote confirmation directly (no biometric verification)
+    setShowVoteConfirmation(true);
   };
 
   const handleVoteConfirm = async () => {
     setShowVoteConfirmation(false);
-    // Fallback for users who skip facial verification
     setIsSubmittingVote(true);
 
     try {
@@ -167,47 +110,8 @@ const VotingPage = () => {
         nomineeId: selectedNominee._id
       };
 
-      // Use regular vote submission without biometric verification
+      // Submit vote without biometric verification
       await api.post('/votes', voteData);
-      
-      // Update user votes
-      setUserVotes(prev => ({
-        ...prev,
-        [selectedAward._id]: {
-          awardId: selectedAward._id,
-          nomineeId: selectedNominee._id,
-          nominee: selectedNominee,
-          award: selectedAward,
-          timestamp: new Date().toISOString(),
-          biometricVerified: false
-        }
-      }));
-
-      // Reset selection
-      setSelectedNominee(null);
-      
-      // Show success message
-      alert('Your vote has been successfully submitted!');
-      
-    } catch (error) {
-      console.error('Vote submission error:', error);
-      alert(error.response?.data?.error?.message || 'Failed to submit vote. Please try again.');
-    } finally {
-      setIsSubmittingVote(false);
-    }
-  };
-
-  const handleBiometricSuccess = async () => {
-    setShowBiometricVerification(false);
-    setIsSubmittingVote(true);
-
-    try {
-      const voteData = {
-        awardId: selectedAward._id,
-        nomineeId: selectedNominee._id
-      };
-
-      await submitVoteWithBiometric(voteData);
       
       // Update user votes
       setUserVotes(prev => ({
@@ -223,6 +127,7 @@ const VotingPage = () => {
 
       // Reset selection
       setSelectedNominee(null);
+      setSelectedAward(null);
       
       // Show success message
       alert('Your vote has been successfully submitted!');
@@ -235,19 +140,10 @@ const VotingPage = () => {
     }
   };
 
-  const handleBiometricFailure = (result) => {
-    setShowBiometricVerification(false);
-    console.error('Biometric verification failed:', result);
-    alert(result.message || 'Biometric verification failed. Please try again.');
-  };
-
   const handleModalCancel = () => {
-    setShowBiometricVerification(false);
-    setShowFacialVerification(false);
     setShowVoteConfirmation(false);
     setSelectedNominee(null);
     setSelectedAward(null);
-    // setBiometricVerificationData(null); // Removed unused variable
   };
 
   // Nomination handlers
@@ -599,28 +495,6 @@ const VotingPage = () => {
       )}
 
       {/* Modals */}
-      <BiometricVerification
-        isVisible={showBiometricVerification}
-        onVerificationSuccess={handleBiometricSuccess}
-        onVerificationFailure={handleBiometricFailure}
-        onCancel={handleModalCancel}
-        title="Verify Your Identity"
-        message="Please verify your identity using biometric authentication to cast your vote."
-      />
-
-      {/* Facial Recognition Verification Modal */}
-      {showFacialVerification && (
-        <div className="voting-page__modal-overlay">
-          <div className="voting-page__modal-content facial-verification-modal">
-            <FacialVerification
-              onVerificationComplete={handleFacialVerificationComplete}
-              onCancel={handleFacialVerificationCancel}
-              awardId={selectedAward?._id}
-            />
-          </div>
-        </div>
-      )}
-
       <VoteConfirmation
         isVisible={showVoteConfirmation}
         nominee={selectedNominee}

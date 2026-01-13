@@ -8,6 +8,7 @@ const Navigation = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -29,6 +30,14 @@ const Navigation = () => {
     setIsDrawerOpen(false);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   const handleLogout = async () => {
     closeDrawer();
     await logout();
@@ -45,13 +54,22 @@ const Navigation = () => {
                   src="/assets/images/yodeco-logo.png" 
                   alt="YODECO Logo" 
                   className="navigation__logo-image"
+                  onError={(e) => {
+                    // Fallback if logo fails to load
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'inline-block';
+                  }}
                 />
+                <div className="navigation__logo-fallback" style={{ display: 'none' }}>
+                  YODECO
+                </div>
               </div>
-              <span className="navigation__brand-text">Youth Democratic Coalition</span>
+              <span className="navigation__brand-text">YODECO</span>
             </Link>
           </div>
 
-          <div className="navigation__center">
+          {/* Desktop Menu */}
+          <div className="navigation__center navigation__center--desktop">
             <div className="navigation__public-menu">
               <a 
                 href="https://yodeco.ng" 
@@ -67,6 +85,56 @@ const Navigation = () => {
               >
                 Membership Registration
               </Link>
+            </div>
+          </div>
+
+          {/* Mobile Menu Dropdown for Public Links */}
+          <div className="navigation__center navigation__center--mobile">
+            <div className="navigation__mobile-dropdown">
+              <button
+                onClick={toggleMobileMenu}
+                className="navigation__mobile-menu-button"
+                type="button"
+                aria-label="Open menu"
+              >
+                Menu
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none"
+                  className={`navigation__dropdown-arrow ${isMobileMenuOpen ? 'navigation__dropdown-arrow--open' : ''}`}
+                >
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
+              
+              {isMobileMenuOpen && (
+                <>
+                  <div 
+                    className="navigation__mobile-dropdown-overlay"
+                    onClick={closeMobileMenu}
+                  />
+                  <div className="navigation__mobile-dropdown-menu">
+                    <a 
+                      href="https://yodeco.ng" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="navigation__mobile-dropdown-link"
+                      onClick={closeMobileMenu}
+                    >
+                      YODECO Website
+                    </a>
+                    <Link 
+                      to="/member/register" 
+                      className="navigation__mobile-dropdown-link"
+                      onClick={closeMobileMenu}
+                    >
+                      Membership Registration
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -107,8 +175,15 @@ const Navigation = () => {
                   src="/assets/images/yodeco-logo.png" 
                   alt="YODECO Logo" 
                   className="navigation__drawer-logo-image"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'inline-block';
+                  }}
                 />
-                <span className="navigation__drawer-title">Youth Democratic Coalition</span>
+                <div className="navigation__drawer-logo-fallback" style={{ display: 'none' }}>
+                  YODECO
+                </div>
+                <span className="navigation__drawer-title">YODECO</span>
               </div>
               <button
                 onClick={closeDrawer}
