@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
+import { getImageUrl } from '../utils/imageUtils';
 import './AdminMembersPage.css';
 
 const AdminMembersPage = () => {
@@ -285,11 +286,17 @@ const AdminMembersPage = () => {
                       {(member.profilePicture?.url && member.profilePicture.url.trim() !== '') ? (
                         <>
                           <img 
-                            src={member.profilePicture.url} 
+                            src={getImageUrl(member.profilePicture.url)} 
                             alt={member.fullName}
                             onError={(e) => {
                               console.error('Profile picture failed to load:', member.profilePicture.url);
                               e.target.style.display = 'none';
+                              const placeholder = e.target.parentNode.querySelector('.avatar-placeholder');
+                              if (placeholder) placeholder.style.display = 'flex';
+                            }}
+                            onLoad={(e) => {
+                              const placeholder = e.target.parentNode.querySelector('.avatar-placeholder');
+                              if (placeholder) placeholder.style.display = 'none';
                             }}
                           />
                           <div className="avatar-placeholder" style={{ display: 'none' }}>

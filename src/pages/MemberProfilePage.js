@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
+import { getImageUrl } from '../utils/imageUtils';
 import './MemberProfilePage.css';
 
 const MemberProfilePage = () => {
@@ -263,11 +264,17 @@ const MemberProfilePage = () => {
             {(previewImage || (member.profilePicture?.url && member.profilePicture.url.trim() !== '')) ? (
               <>
                 <img 
-                  src={previewImage || member.profilePicture.url} 
+                  src={previewImage || getImageUrl(member.profilePicture.url)} 
                   alt={`${member.fullName}'s profile`}
                   onError={(e) => {
                     console.error('Profile picture failed to load:', member.profilePicture.url);
                     e.target.style.display = 'none';
+                    const placeholder = e.target.parentNode.querySelector('.profile-placeholder');
+                    if (placeholder) placeholder.style.display = 'flex';
+                  }}
+                  onLoad={(e) => {
+                    const placeholder = e.target.parentNode.querySelector('.profile-placeholder');
+                    if (placeholder) placeholder.style.display = 'none';
                   }}
                 />
                 <div className="profile-placeholder" style={{ display: 'none' }}>
