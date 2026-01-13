@@ -38,7 +38,7 @@ const MemberProfilePage = () => {
     if (isEditRoute) {
       setIsEditing(true);
     }
-  }, [id, isEditRoute]);
+  }, [id, isEditRoute]); // fetchMemberProfile is stable, no need to include
 
   const fetchMemberProfile = async () => {
     try {

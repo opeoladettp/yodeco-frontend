@@ -20,7 +20,7 @@ const MyNominations = () => {
     if (user) {
       fetchMyNominations();
     }
-  }, [user, pagination.page]);
+  }, [user, pagination.page]); // fetchMyNominations is stable, no need to include
 
   const fetchMyNominations = async () => {
     try {

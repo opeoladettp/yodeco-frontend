@@ -6,6 +6,9 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build"
+      },
+      "env": {
+        "CI": "false"
       }
     }
   ],
@@ -26,6 +29,8 @@
     "REACT_APP_GOOGLE_CLIENT_ID": "215459647584-dhl1its2vf2f5df3tng8d9r3ruk5cukj.apps.googleusercontent.com",
     "REACT_APP_APP_NAME": "YODECO Voting Portal",
     "REACT_APP_COMPANY_NAME": "Youth Democratic Coalition (YODECO)",
-    "REACT_APP_CDN_URL": "https://bvp-storage.s3.eu-north-1.amazonaws.com"
+    "REACT_APP_CDN_URL": "https://bvp-storage.s3.eu-north-1.amazonaws.com",
+    "CI": "false",
+    "GENERATE_SOURCEMAP": "false"
   }
 }

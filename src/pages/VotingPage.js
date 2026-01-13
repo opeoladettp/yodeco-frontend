@@ -34,7 +34,7 @@ const VotingPage = () => {
   const [selectedAwardForNomination, setSelectedAwardForNomination] = useState(null);
   const [isSubmittingVote, setIsSubmittingVote] = useState(false);
   const [isSubmittingNomination, setIsSubmittingNomination] = useState(false);
-  const [biometricVerificationData, setBiometricVerificationData] = useState(null);
+  // Removed unused biometricVerificationData variable
 
   useEffect(() => {
     fetchVotingData();
@@ -108,7 +108,7 @@ const VotingPage = () => {
 
   const handleFacialVerificationComplete = async (verificationData) => {
     setShowFacialVerification(false);
-    setBiometricVerificationData(verificationData);
+    // setBiometricVerificationData(verificationData); // Removed unused variable
     setIsSubmittingVote(true);
 
     try {
@@ -136,7 +136,7 @@ const VotingPage = () => {
 
       // Reset selection
       setSelectedNominee(null);
-      setBiometricVerificationData(null);
+      // setBiometricVerificationData(null); // Removed unused variable
       
       // Show success message
       alert('Your vote has been successfully submitted with biometric verification!');
@@ -153,7 +153,7 @@ const VotingPage = () => {
     setShowFacialVerification(false);
     setSelectedNominee(null);
     setSelectedAward(null);
-    setBiometricVerificationData(null);
+    // setBiometricVerificationData(null); // Removed unused variable
   };
 
   const handleVoteConfirm = async () => {
@@ -247,7 +247,7 @@ const VotingPage = () => {
     setShowVoteConfirmation(false);
     setSelectedNominee(null);
     setSelectedAward(null);
-    setBiometricVerificationData(null);
+    // setBiometricVerificationData(null); // Removed unused variable
   };
 
   // Nomination handlers
