@@ -38,7 +38,8 @@ const MemberProfilePage = () => {
     if (isEditRoute) {
       setIsEditing(true);
     }
-  }, [id, isEditRoute]); // fetchMemberProfile is stable, no need to include
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, isEditRoute]);
 
   const fetchMemberProfile = async () => {
     try {

@@ -20,7 +20,8 @@ const MyNominations = () => {
     if (user) {
       fetchMyNominations();
     }
-  }, [user, pagination.page]); // fetchMyNominations is stable, no need to include
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, pagination.page]);
 
   const fetchMyNominations = async () => {
     try {
