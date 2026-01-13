@@ -83,20 +83,49 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Check authentication status on mount
+  // Check authentication status on mount and handle OAuth callback
   useEffect(() => {
-    checkAuthStatus();
+    handleOAuthCallback();
   }, []);
+
+  const handleOAuthCallback = async () => {
+    // Check if this is an OAuth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const loginStatus = urlParams.get('login');
+    
+    if (loginStatus === 'success') {
+      console.log('🔄 OAuth callback detected, checking authentication status...');
+      
+      // Clear the URL parameters
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+      
+      // Check authentication status after OAuth callback
+      await checkAuthStatus();
+    } else {
+      // Regular authentication check
+      await checkAuthStatus();
+    }
+  };
 
   const checkAuthStatus = async () => {
     try {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
+      
+      console.log('🔍 Checking authentication status...');
+      console.log('API URL:', process.env.REACT_APP_API_URL);
+      console.log('Current URL:', window.location.href);
+      
       const response = await api.get('/auth/me');
       dispatch({ 
         type: AUTH_ACTIONS.LOGIN_SUCCESS, 
         payload: response.data.user 
       });
+      console.log('✅ Authentication successful:', response.data.user);
     } catch (error) {
+      console.log('❌ Authentication failed:', error.response?.data || error.message);
+      console.log('Error status:', error.response?.status);
+      console.log('Error headers:', error.response?.headers);
       dispatch({ 
         type: AUTH_ACTIONS.LOGIN_FAILURE, 
         payload: null 
