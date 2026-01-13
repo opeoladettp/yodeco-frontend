@@ -51,11 +51,11 @@ const Navigation = () => {
             <Link to="/" className="navigation__brand-link">
               <div className="navigation__logo">
                 <img 
-                  src={`${process.env.PUBLIC_URL}/assets/images/yodeco-logo.png`}
+                  src="/assets/images/yodeco-logo.png"
                   alt="YODECO Logo" 
                   className="navigation__logo-image"
                   onError={(e) => {
-                    console.log('Logo failed to load, showing fallback');
+                    console.log('Logo failed to load, showing fallback. Attempted URL:', e.target.src);
                     e.target.style.display = 'none';
                     const fallback = e.target.parentNode.querySelector('.navigation__logo-fallback');
                     if (fallback) {
@@ -63,7 +63,7 @@ const Navigation = () => {
                     }
                   }}
                   onLoad={(e) => {
-                    console.log('Logo loaded successfully');
+                    console.log('Logo loaded successfully from:', e.target.src);
                     const fallback = e.target.parentNode.querySelector('.navigation__logo-fallback');
                     if (fallback) {
                       fallback.style.display = 'none';
@@ -183,11 +183,11 @@ const Navigation = () => {
             <div className="navigation__drawer-header">
               <div className="navigation__drawer-logo">
                 <img 
-                  src={`${process.env.PUBLIC_URL}/assets/images/yodeco-logo.png`}
+                  src="/assets/images/yodeco-logo.png"
                   alt="YODECO Logo" 
                   className="navigation__drawer-logo-image"
                   onError={(e) => {
-                    console.log('Drawer logo failed to load, showing fallback');
+                    console.log('Drawer logo failed to load, showing fallback. Attempted URL:', e.target.src);
                     e.target.style.display = 'none';
                     const fallback = e.target.parentNode.querySelector('.navigation__drawer-logo-fallback');
                     if (fallback) {
@@ -195,7 +195,7 @@ const Navigation = () => {
                     }
                   }}
                   onLoad={(e) => {
-                    console.log('Drawer logo loaded successfully');
+                    console.log('Drawer logo loaded successfully from:', e.target.src);
                     const fallback = e.target.parentNode.querySelector('.navigation__drawer-logo-fallback');
                     if (fallback) {
                       fallback.style.display = 'none';

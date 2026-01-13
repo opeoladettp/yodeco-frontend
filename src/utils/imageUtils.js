@@ -9,24 +9,37 @@ export const getImageUrl = (imageUrl) => {
   
   console.log('getImageUrl input:', imageUrl);
   
-  // If it's already a full URL (including S3 URLs), return as is
+  // If it's already a full URL, check if it needs domain correction
   if (imageUrl.startsWith('http')) {
-    console.log('Full URL detected, returning as-is:', imageUrl);
+    console.log('Full URL detected:', imageUrl);
+    
+    // Fix incorrect domain in existing URLs
+    if (imageUrl.includes('yodeco.duckdns.org/api/media/download/') || 
+        imageUrl.includes('www.yodeco.duckdns.org/api/media/download/')) {
+      const correctedUrl = imageUrl.replace(
+        /https?:\/\/(www\.)?yodeco\.duckdns\.org\/api\/media\/download\//,
+        'https://yodeco-backend.duckdns.org/api/media/download/'
+      );
+      console.log('Corrected URL:', correctedUrl);
+      return correctedUrl;
+    }
+    
+    // If it's already a correct backend URL or S3 URL, return as-is
     return imageUrl;
   }
   
-  // If it's an S3 object key (contains uploads/), construct the S3 URL directly
+  // If it's an S3 object key (contains uploads/), construct the backend media URL
   if (imageUrl.includes('uploads/')) {
-    const cdnUrl = process.env.REACT_APP_CDN_URL || 'https://bvp-storage.s3.eu-north-1.amazonaws.com';
-    const fullUrl = `${cdnUrl}/${imageUrl}`;
-    console.log('S3 URL constructed:', fullUrl);
+    const apiBaseUrl = process.env.REACT_APP_API_URL || 'https://yodeco-backend.duckdns.org/api';
+    const fullUrl = `${apiBaseUrl}/media/download/${imageUrl}`;
+    console.log('Backend media URL constructed:', fullUrl);
     return fullUrl;
   }
   
-  // For other cases, assume it's an S3 key and try to construct the URL
-  const cdnUrl = process.env.REACT_APP_CDN_URL || 'https://bvp-storage.s3.eu-north-1.amazonaws.com';
-  const fullUrl = `${cdnUrl}/${imageUrl}`;
-  console.log('Default S3 URL constructed:', fullUrl);
+  // For other cases, assume it's an S3 key and construct backend media URL
+  const apiBaseUrl = process.env.REACT_APP_API_URL || 'https://yodeco-backend.duckdns.org/api';
+  const fullUrl = `${apiBaseUrl}/media/download/${imageUrl}`;
+  console.log('Default backend media URL constructed:', fullUrl);
   return fullUrl;
 };
 
