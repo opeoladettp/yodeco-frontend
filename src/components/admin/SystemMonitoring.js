@@ -223,20 +223,22 @@ const SystemMonitoring = () => {
                 </div>
               </div>
               
-              <div className="system-monitoring__component-status">
-                {Object.entries(healthSummary.components).map(([component, status]) => (
-                  <div key={component} className="system-monitoring__component">
-                    <div className="system-monitoring__component-name">
-                      {component && typeof component === 'string'
-                        ? component.charAt(0).toUpperCase() + component.slice(1)
-                        : 'Unknown'}
+              {healthSummary.components && typeof healthSummary.components === 'object' && (
+                <div className="system-monitoring__component-status">
+                  {Object.entries(healthSummary.components).map(([component, status]) => (
+                    <div key={component} className="system-monitoring__component">
+                      <div className="system-monitoring__component-name">
+                        {component && typeof component === 'string'
+                          ? component.charAt(0).toUpperCase() + component.slice(1)
+                          : 'Unknown'}
+                      </div>
+                      <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status.status}`}>
+                        {status.status}
+                      </div>
                     </div>
-                    <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status.status}`}>
-                      {status.status}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
