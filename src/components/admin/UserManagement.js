@@ -229,14 +229,14 @@ const UserManagement = () => {
                   <td className="user-management__user-cell">
                     <div className="user-management__user-info">
                       <div className="user-management__user-avatar">
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                        {user.name && user.name.length > 0 ? user.name.charAt(0).toUpperCase() : (user.email && user.email.length > 0 ? user.email.charAt(0).toUpperCase() : 'U')}
                       </div>
                       <div className="user-management__user-details">
                         <div className="user-management__user-name">
-                          {user.name || 'Unknown User'}
+                          {user.name || user.email || 'Unknown User'}
                         </div>
                         <div className="user-management__user-email">
-                          {user.email}
+                          {user.email || 'No email'}
                         </div>
                       </div>
                     </div>

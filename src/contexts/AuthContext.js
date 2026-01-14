@@ -86,6 +86,18 @@ export const AuthProvider = ({ children }) => {
   // Check authentication status on mount and handle OAuth callback
   useEffect(() => {
     handleOAuthCallback();
+    
+    // Listen for logout events from API service
+    const handleLogoutEvent = (event) => {
+      console.log('🚪 Logout event received:', event.detail);
+      dispatch({ type: AUTH_ACTIONS.LOGOUT });
+    };
+    
+    window.addEventListener('auth:logout', handleLogoutEvent);
+    
+    return () => {
+      window.removeEventListener('auth:logout', handleLogoutEvent);
+    };
   }, []);
 
   const handleOAuthCallback = async () => {

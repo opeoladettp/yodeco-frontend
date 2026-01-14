@@ -118,7 +118,23 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor with enhanced error handling
+// Track if we're currently refreshing to avoid multiple refresh requests
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  
+  failedQueue = [];
+};
+
+// Response interceptor with enhanced error handling and token refresh
 api.interceptors.response.use(
   (response) => {
     // Log successful requests in development
@@ -130,12 +146,75 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const originalRequest = error.config;
     const apiError = APIError.fromResponse(error);
     
     // Log errors in development
     if (process.env.NODE_ENV === 'development') {
       const duration = error.config?.metadata ? Date.now() - error.config.metadata.startTime : 0;
       console.error(`❌ ${error.config?.method?.toUpperCase()} ${error.config?.url} - ${apiError.statusCode} (${duration}ms)`, apiError);
+    }
+
+    // Handle token expiration and refresh
+    if (apiError.statusCode === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        // If already refreshing, queue this request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(token => {
+          originalRequest.headers['Authorization'] = 'Bearer ' + token;
+          return api(originalRequest);
+        }).catch(err => {
+          return Promise.reject(err);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        console.log('🔄 Access token expired, attempting to refresh...');
+        
+        // Try to refresh the token
+        const refreshResponse = await axios.post(
+          `${api.defaults.baseURL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
+
+        const { accessToken } = refreshResponse.data;
+        
+        if (accessToken) {
+          // Store new access token
+          localStorage.setItem('accessToken', accessToken);
+          console.log('✅ Token refreshed successfully');
+          
+          // Update the authorization header
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+          originalRequest.headers['Authorization'] = 'Bearer ' + accessToken;
+          
+          // Process queued requests
+          processQueue(null, accessToken);
+          
+          // Retry the original request
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        console.error('❌ Token refresh failed:', refreshError);
+        processQueue(refreshError, null);
+        
+        // Clear tokens and redirect to login
+        localStorage.removeItem('accessToken');
+        
+        // Dispatch logout event for AuthContext to handle
+        window.dispatchEvent(new CustomEvent('auth:logout', { 
+          detail: { reason: 'TOKEN_REFRESH_FAILED' } 
+        }));
+        
+        return Promise.reject(apiError);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     // Handle specific error scenarios
