@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { nigeriaStates, lgasByState, getWardsForLGA } from '../data/nigeriaLocations';
+import { nigeriaStates, lgasByState } from '../data/nigeriaLocations';
 import './MemberRegistrationPage.css';
 
 const MemberRegistrationPage = () => {
@@ -25,7 +25,6 @@ const MemberRegistrationPage = () => {
   });
 
   const [availableLGAs, setAvailableLGAs] = useState([]);
-  const [availableWards, setAvailableWards] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
 
   const handleInputChange = (e) => {
@@ -46,11 +45,8 @@ const MemberRegistrationPage = () => {
         lga: '',
         ward: ''
       }));
-      setAvailableWards([]);
     } else if (name === 'lga') {
-      // Update wards when LGA changes
-      const wards = getWardsForLGA(formData.state, value);
-      setAvailableWards(wards);
+      // Clear ward when LGA changes
       setFormData(prev => ({
         ...prev,
         lga: value,
@@ -420,19 +416,16 @@ const MemberRegistrationPage = () => {
 
             <div className="form-group">
               <label htmlFor="ward">Ward (Optional)</label>
-              <select
+              <input
+                type="text"
                 id="ward"
                 name="ward"
                 value={formData.ward}
                 onChange={handleInputChange}
-                disabled={isSubmitting || !formData.lga}
-              >
-                <option value="">Select Ward</option>
-                {availableWards.map(ward => (
-                  <option key={ward} value={ward}>{ward}</option>
-                ))}
-              </select>
-              {!formData.lga && <small>Please select an LGA first</small>}
+                placeholder="Enter your ward"
+                disabled={isSubmitting}
+              />
+              <small>Enter the name or number of your ward</small>
             </div>
           </div>
 
