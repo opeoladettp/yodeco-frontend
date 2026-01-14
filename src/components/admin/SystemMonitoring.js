@@ -345,127 +345,145 @@ const SystemMonitoring = () => {
         <div className="system-monitoring__performance">
           {performanceMetrics ? (
             <div className="system-monitoring__performance-grid">
-              <div className="system-monitoring__performance-section">
-                <h3>API Performance</h3>
-                <div className="system-monitoring__performance-stats">
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Total Requests:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.requests.total}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Success Rate:</span>
-                    <span className="system-monitoring__performance-value">
-                      {((performanceMetrics.requests.successful / performanceMetrics.requests.total) * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Error Rate:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.requests.errorRate}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Avg Response Time:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.requests.averageResponseTime}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="system-monitoring__performance-section">
-                <h3>Vote Processing</h3>
-                <div className="system-monitoring__performance-stats">
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Total Votes:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.votes.total}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Success Rate:</span>
-                    <span className="system-monitoring__performance-value">
-                      {((performanceMetrics.votes.successful / performanceMetrics.votes.total) * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Failure Rate:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.votes.failureRate}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Avg Processing Time:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.votes.averageProcessingTime}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Duplicates:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.votes.duplicates}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Biometric Failures:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.votes.biometricFailures}</span>
+              {performanceMetrics.requests && (
+                <div className="system-monitoring__performance-section">
+                  <h3>API Performance</h3>
+                  <div className="system-monitoring__performance-stats">
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Total Requests:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.requests.total || 0}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Success Rate:</span>
+                      <span className="system-monitoring__performance-value">
+                        {performanceMetrics.requests.total > 0
+                          ? ((performanceMetrics.requests.successful / performanceMetrics.requests.total) * 100).toFixed(1)
+                          : 0}%
+                      </span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Error Rate:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.requests.errorRate || '0%'}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Avg Response Time:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.requests.averageResponseTime || 'N/A'}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              <div className="system-monitoring__performance-section">
-                <h3>Database Performance</h3>
-                <div className="system-monitoring__performance-stats">
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Total Queries:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.database.queries}</span>
+              {performanceMetrics.votes && (
+                <div className="system-monitoring__performance-section">
+                  <h3>Vote Processing</h3>
+                  <div className="system-monitoring__performance-stats">
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Total Votes:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.votes.total || 0}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Success Rate:</span>
+                      <span className="system-monitoring__performance-value">
+                        {performanceMetrics.votes.total > 0
+                          ? ((performanceMetrics.votes.successful / performanceMetrics.votes.total) * 100).toFixed(1)
+                          : 0}%
+                      </span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Failure Rate:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.votes.failureRate || '0%'}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Avg Processing Time:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.votes.averageProcessingTime || 'N/A'}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Duplicates:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.votes.duplicates || 0}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Biometric Failures:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.votes.biometricFailures || 0}</span>
+                    </div>
                   </div>
+                </div>
+              )}
+
+              {performanceMetrics.database && (
+                <div className="system-monitoring__performance-section">
+                  <h3>Database Performance</h3>
+                  <div className="system-monitoring__performance-stats">
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Total Queries:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.database.queries || 0}</span>
+                    </div>
                   <div className="system-monitoring__performance-stat">
                     <span className="system-monitoring__performance-label">Slow Queries:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.database.slowQueries}</span>
+                    <span className="system-monitoring__performance-value">{performanceMetrics.database.slowQueries || 0}</span>
                   </div>
                   <div className="system-monitoring__performance-stat">
                     <span className="system-monitoring__performance-label">Slow Query Rate:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.database.slowQueryRate}</span>
+                    <span className="system-monitoring__performance-value">{performanceMetrics.database.slowQueryRate || '0%'}</span>
                   </div>
                   <div className="system-monitoring__performance-stat">
                     <span className="system-monitoring__performance-label">Errors:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.database.errors}</span>
+                    <span className="system-monitoring__performance-value">{performanceMetrics.database.errors || 0}</span>
                   </div>
                 </div>
               </div>
+              )}
 
-              <div className="system-monitoring__performance-section">
-                <h3>Cache Performance</h3>
-                <div className="system-monitoring__performance-stats">
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Cache Hits:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.cache.hits}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Cache Misses:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.cache.misses}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Hit Rate:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.cache.hitRate}</span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Fallback Used:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.cache.fallbackUsed}</span>
+              {performanceMetrics.cache && (
+                <div className="system-monitoring__performance-section">
+                  <h3>Cache Performance</h3>
+                  <div className="system-monitoring__performance-stats">
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Cache Hits:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.cache.hits || 0}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Cache Misses:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.cache.misses || 0}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Hit Rate:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.cache.hitRate || '0%'}</span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Fallback Used:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.cache.fallbackUsed || 0}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              <div className="system-monitoring__performance-section">
-                <h3>Memory Usage</h3>
-                <div className="system-monitoring__performance-stats">
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Heap Used:</span>
-                    <span className="system-monitoring__performance-value">
-                      {(performanceMetrics.memory.heapUsed / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Heap Total:</span>
-                    <span className="system-monitoring__performance-value">
-                      {(performanceMetrics.memory.heapTotal / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                  <div className="system-monitoring__performance-stat">
-                    <span className="system-monitoring__performance-label">Usage:</span>
-                    <span className="system-monitoring__performance-value">{performanceMetrics.memory.heapUsagePercent}</span>
+              {performanceMetrics.memory && (
+                <div className="system-monitoring__performance-section">
+                  <h3>Memory Usage</h3>
+                  <div className="system-monitoring__performance-stats">
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Heap Used:</span>
+                      <span className="system-monitoring__performance-value">
+                        {performanceMetrics.memory.heapUsed 
+                          ? (performanceMetrics.memory.heapUsed / 1024 / 1024).toFixed(2) 
+                          : 0} MB
+                      </span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Heap Total:</span>
+                      <span className="system-monitoring__performance-value">
+                        {performanceMetrics.memory.heapTotal 
+                          ? (performanceMetrics.memory.heapTotal / 1024 / 1024).toFixed(2) 
+                          : 0} MB
+                      </span>
+                    </div>
+                    <div className="system-monitoring__performance-stat">
+                      <span className="system-monitoring__performance-label">Usage:</span>
+                      <span className="system-monitoring__performance-value">{performanceMetrics.memory.heapUsagePercent || '0%'}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           ) : (
             <div className="system-monitoring__no-performance">
