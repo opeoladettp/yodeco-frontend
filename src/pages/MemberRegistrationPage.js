@@ -376,7 +376,6 @@ const MemberRegistrationPage = () => {
                 name="country"
                 value={formData.country}
                 readOnly
-                disabled
                 className="readonly-field"
               />
               <small>All YODECO members are Nigerian citizens</small>
