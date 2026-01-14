@@ -156,9 +156,10 @@ api.interceptors.response.use(
     }
 
     // Handle token expiration and refresh
-    if (apiError.statusCode === 401 && !originalRequest._retry) {
+    if (apiError.statusCode === 401 && !originalRequest._retry && originalRequest.url !== '/auth/refresh') {
       if (isRefreshing) {
         // If already refreshing, queue this request
+        console.log('⏳ Token refresh in progress, queuing request...');
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(token => {
@@ -175,19 +176,25 @@ api.interceptors.response.use(
       try {
         console.log('🔄 Access token expired, attempting to refresh...');
         
-        // Try to refresh the token
+        // Try to refresh the token using axios directly (not the api instance)
         const refreshResponse = await axios.post(
           `${api.defaults.baseURL}/auth/refresh`,
           {},
-          { withCredentials: true }
+          { 
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
         );
 
-        const { accessToken } = refreshResponse.data;
+        const { accessToken, user } = refreshResponse.data;
         
         if (accessToken) {
           // Store new access token
           localStorage.setItem('accessToken', accessToken);
           console.log('✅ Token refreshed successfully');
+          console.log('👤 User:', user?.name || 'Unknown');
           
           // Update the authorization header
           api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
@@ -198,9 +205,11 @@ api.interceptors.response.use(
           
           // Retry the original request
           return api(originalRequest);
+        } else {
+          throw new Error('No access token in refresh response');
         }
       } catch (refreshError) {
-        console.error('❌ Token refresh failed:', refreshError);
+        console.error('❌ Token refresh failed:', refreshError.response?.data || refreshError.message);
         processQueue(refreshError, null);
         
         // Clear tokens and redirect to login
