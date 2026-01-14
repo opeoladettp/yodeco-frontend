@@ -175,7 +175,6 @@ const MemberRegistrationPage = () => {
       });
       setPreviewImage(null);
       setAvailableLGAs([]);
-      setAvailableWards([]);
       
     } catch (error) {
       console.error('Registration error:', error);
