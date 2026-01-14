@@ -211,10 +211,12 @@ const SystemMonitoring = () => {
                 </div>
                 <div className="system-monitoring__health-text">
                   <div className="system-monitoring__health-title">
-                    System Status: {healthSummary.overall.charAt(0).toUpperCase() + healthSummary.overall.slice(1)}
+                    System Status: {healthSummary.overall && typeof healthSummary.overall === 'string' 
+                      ? healthSummary.overall.charAt(0).toUpperCase() + healthSummary.overall.slice(1)
+                      : 'Unknown'}
                   </div>
                   <div className="system-monitoring__health-subtitle">
-                    {healthSummary.alerts.critical > 0 
+                    {healthSummary.alerts?.critical > 0 
                       ? `${healthSummary.alerts.critical} critical alerts` 
                       : 'All systems operational'}
                   </div>
@@ -225,7 +227,9 @@ const SystemMonitoring = () => {
                 {Object.entries(healthSummary.components).map(([component, status]) => (
                   <div key={component} className="system-monitoring__component">
                     <div className="system-monitoring__component-name">
-                      {component.charAt(0).toUpperCase() + component.slice(1)}
+                      {component && typeof component === 'string'
+                        ? component.charAt(0).toUpperCase() + component.slice(1)
+                        : 'Unknown'}
                     </div>
                     <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status.status}`}>
                       {status.status}
