@@ -194,7 +194,7 @@ const SystemMonitoring = () => {
         <div className="system-monitoring__overview">
           {healthSummary && (
             <div className="system-monitoring__health-summary">
-              <div className={`system-monitoring__health-status system-monitoring__health-status--${healthSummary.overall}`}>
+              <div className={`system-monitoring__health-status system-monitoring__health-status--${healthSummary.overall || 'unknown'}`}>
                 <div className="system-monitoring__health-indicator">
                   {healthSummary.overall === 'healthy' ? (
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -232,8 +232,8 @@ const SystemMonitoring = () => {
                           ? component.charAt(0).toUpperCase() + component.slice(1)
                           : 'Unknown'}
                       </div>
-                      <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status.status}`}>
-                        {status.status}
+                      <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status?.status || 'unknown'}`}>
+                        {status?.status || 'unknown'}
                       </div>
                     </div>
                   ))}
