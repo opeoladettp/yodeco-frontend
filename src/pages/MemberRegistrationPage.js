@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { nigeriaStates, lgasByState, getWardsForLGA } from '../data/nigeriaLocations';
 import './MemberRegistrationPage.css';
 
 const MemberRegistrationPage = () => {
@@ -16,9 +17,15 @@ const MemberRegistrationPage = () => {
     email: '',
     phoneNumber: '',
     dateOfBirth: '',
+    country: 'Nigeria',
+    state: '',
+    lga: '',
+    ward: '',
     profilePicture: null
   });
 
+  const [availableLGAs, setAvailableLGAs] = useState([]);
+  const [availableWards, setAvailableWards] = useState([]);
   const [previewImage, setPreviewImage] = useState(null);
 
   const handleInputChange = (e) => {
@@ -27,6 +34,29 @@ const MemberRegistrationPage = () => {
       ...prev,
       [name]: value
     }));
+    
+    // Handle cascading dropdowns
+    if (name === 'state') {
+      // Update LGAs when state changes
+      const lgas = lgasByState[value] || [];
+      setAvailableLGAs(lgas);
+      setFormData(prev => ({
+        ...prev,
+        state: value,
+        lga: '',
+        ward: ''
+      }));
+      setAvailableWards([]);
+    } else if (name === 'lga') {
+      // Update wards when LGA changes
+      const wards = getWardsForLGA(formData.state, value);
+      setAvailableWards(wards);
+      setFormData(prev => ({
+        ...prev,
+        lga: value,
+        ward: ''
+      }));
+    }
     
     // Clear errors when user starts typing
     if (error) setError(null);
@@ -66,8 +96,8 @@ const MemberRegistrationPage = () => {
     e.preventDefault();
     
     // Validate required fields
-    const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'dateOfBirth'];
-    const missingFields = requiredFields.filter(field => !formData[field].trim());
+    const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'dateOfBirth', 'country', 'state', 'lga'];
+    const missingFields = requiredFields.filter(field => !formData[field] || !formData[field].toString().trim());
     
     if (missingFields.length > 0) {
       setError(`Please fill in all required fields: ${missingFields.join(', ')}`);
@@ -113,6 +143,10 @@ const MemberRegistrationPage = () => {
       submitData.append('email', formData.email.trim());
       submitData.append('phoneNumber', formData.phoneNumber.trim());
       submitData.append('dateOfBirth', formData.dateOfBirth);
+      submitData.append('country', formData.country);
+      submitData.append('state', formData.state);
+      submitData.append('lga', formData.lga);
+      submitData.append('ward', formData.ward || '');
       
       if (formData.profilePicture) {
         submitData.append('profilePicture', formData.profilePicture);
@@ -137,9 +171,15 @@ const MemberRegistrationPage = () => {
         email: '',
         phoneNumber: '',
         dateOfBirth: '',
+        country: 'Nigeria',
+        state: '',
+        lga: '',
+        ward: '',
         profilePicture: null
       });
       setPreviewImage(null);
+      setAvailableLGAs([]);
+      setAvailableWards([]);
       
     } catch (error) {
       console.error('Registration error:', error);
@@ -322,6 +362,78 @@ const MemberRegistrationPage = () => {
                   <img src={previewImage} alt="Profile preview" />
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3>Location Information</h3>
+            
+            <div className="form-group">
+              <label htmlFor="country">Country *</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                value={formData.country}
+                readOnly
+                disabled
+                className="readonly-field"
+              />
+              <small>All YODECO members are Nigerian citizens</small>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="state">State *</label>
+                <select
+                  id="state"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting}
+                >
+                  <option value="">Select State</option>
+                  {nigeriaStates.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="lga">Local Government Area (LGA) *</label>
+                <select
+                  id="lga"
+                  name="lga"
+                  value={formData.lga}
+                  onChange={handleInputChange}
+                  required
+                  disabled={isSubmitting || !formData.state}
+                >
+                  <option value="">Select LGA</option>
+                  {availableLGAs.map(lga => (
+                    <option key={lga} value={lga}>{lga}</option>
+                  ))}
+                </select>
+                {!formData.state && <small>Please select a state first</small>}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="ward">Ward (Optional)</label>
+              <select
+                id="ward"
+                name="ward"
+                value={formData.ward}
+                onChange={handleInputChange}
+                disabled={isSubmitting || !formData.lga}
+              >
+                <option value="">Select Ward</option>
+                {availableWards.map(ward => (
+                  <option key={ward} value={ward}>{ward}</option>
+                ))}
+              </select>
+              {!formData.lga && <small>Please select an LGA first</small>}
             </div>
           </div>
 
