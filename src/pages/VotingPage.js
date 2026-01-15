@@ -141,7 +141,36 @@ const VotingPage = () => {
       
     } catch (error) {
       console.error('Vote submission error:', error);
-      alert(error.response?.data?.error?.message || 'Failed to submit vote. Please try again.');
+      
+      // Extract error details
+      const errorData = error.response?.data?.error;
+      const errorCode = errorData?.code;
+      const errorMessage = errorData?.message;
+      
+      // Provide specific error messages based on error code
+      let userMessage = 'Failed to submit vote. Please try again.';
+      
+      if (errorCode === 'VOTING_NOT_STARTED') {
+        const startDate = errorData?.details?.votingStartDate;
+        userMessage = startDate 
+          ? `Voting has not started yet. Voting begins on ${new Date(startDate).toLocaleDateString()}.`
+          : 'Voting has not started yet for this award.';
+      } else if (errorCode === 'VOTING_ENDED') {
+        const endDate = errorData?.details?.votingEndDate;
+        userMessage = endDate
+          ? `Voting has ended. Voting closed on ${new Date(endDate).toLocaleDateString()}.`
+          : 'Voting has ended for this award.';
+      } else if (errorCode === 'VOTING_NOT_ACTIVE') {
+        userMessage = 'Voting is not currently active for this award.';
+      } else if (errorCode === 'DUPLICATE_VOTE') {
+        userMessage = 'You have already voted for this award category.';
+      } else if (errorCode === 'AWARD_NOT_FOUND' || errorCode === 'NOMINEE_NOT_FOUND') {
+        userMessage = 'The selected award or nominee could not be found.';
+      } else if (errorMessage) {
+        userMessage = errorMessage;
+      }
+      
+      alert(userMessage);
     } finally {
       setIsSubmittingVote(false);
     }

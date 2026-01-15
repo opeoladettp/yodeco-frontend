@@ -194,9 +194,9 @@ const SystemMonitoring = () => {
         <div className="system-monitoring__overview">
           {healthSummary && (
             <div className="system-monitoring__health-summary">
-              <div className={`system-monitoring__health-status system-monitoring__health-status--${healthSummary.overall || 'unknown'}`}>
+              <div className={`system-monitoring__health-status system-monitoring__health-status--${healthSummary.status || healthSummary.overall || 'unknown'}`}>
                 <div className="system-monitoring__health-indicator">
-                  {healthSummary.overall === 'healthy' ? (
+                  {(healthSummary.status === 'ok' || healthSummary.overall === 'healthy') ? (
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" strokeWidth="2"/>
                       <polyline points="22,4 12,14.01 9,11.01" stroke="currentColor" strokeWidth="2"/>
@@ -211,9 +211,11 @@ const SystemMonitoring = () => {
                 </div>
                 <div className="system-monitoring__health-text">
                   <div className="system-monitoring__health-title">
-                    System Status: {healthSummary.overall && typeof healthSummary.overall === 'string' 
-                      ? healthSummary.overall.charAt(0).toUpperCase() + healthSummary.overall.slice(1)
-                      : 'Unknown'}
+                    System Status: {(() => {
+                      const status = healthSummary.status || healthSummary.overall;
+                      if (!status || typeof status !== 'string') return 'Unknown';
+                      return status.charAt(0).toUpperCase() + status.slice(1);
+                    })()}
                   </div>
                   <div className="system-monitoring__health-subtitle">
                     {healthSummary.alerts?.critical > 0 
@@ -223,20 +225,25 @@ const SystemMonitoring = () => {
                 </div>
               </div>
               
-              {healthSummary.components && typeof healthSummary.components === 'object' && (
+              {((healthSummary.services && typeof healthSummary.services === 'object') || 
+                (healthSummary.components && typeof healthSummary.components === 'object')) && (
                 <div className="system-monitoring__component-status">
-                  {Object.entries(healthSummary.components).map(([component, status]) => (
-                    <div key={component} className="system-monitoring__component">
-                      <div className="system-monitoring__component-name">
-                        {component && typeof component === 'string'
-                          ? component.charAt(0).toUpperCase() + component.slice(1)
-                          : 'Unknown'}
+                  {Object.entries(healthSummary.services || healthSummary.components || {}).map(([component, status]) => {
+                    // Handle both formats: { mongodb: { status: 'connected' } } and { mongodb: 'operational' }
+                    const statusValue = typeof status === 'object' ? status.status : status;
+                    return (
+                      <div key={component} className="system-monitoring__component">
+                        <div className="system-monitoring__component-name">
+                          {component && typeof component === 'string'
+                            ? component.charAt(0).toUpperCase() + component.slice(1)
+                            : 'Unknown'}
+                        </div>
+                        <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${statusValue || 'unknown'}`}>
+                          {statusValue || 'unknown'}
+                        </div>
                       </div>
-                      <div className={`system-monitoring__component-indicator system-monitoring__component-indicator--${status?.status || 'unknown'}`}>
-                        {status?.status || 'unknown'}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -9,20 +9,36 @@ export const getImageUrl = (imageUrl) => {
   
   console.log('getImageUrl input:', imageUrl);
   
-  const apiBaseUrl = process.env.REACT_APP_API_URL || 'https://yodeco-backend.duckdns.org/api';
+  const apiBaseUrl = process.env.REACT_APP_API_URL || 'https://api.yodeco.ng/api';
   
-  // If it's already a backend media URL, return as-is
+  // If it's already a backend media URL with the correct domain, return as-is
   if (imageUrl.includes('/api/media/download/')) {
-    // Fix incorrect domain in existing URLs
+    // Fix incorrect domain in existing URLs (support old domains and frontend domain)
     if (imageUrl.includes('yodeco.duckdns.org/api/media/download/') || 
-        imageUrl.includes('www.yodeco.duckdns.org/api/media/download/')) {
+        imageUrl.includes('www.yodeco.duckdns.org/api/media/download/') ||
+        imageUrl.includes('yodeco-backend.duckdns.org/api/media/download/') ||
+        imageUrl.includes('portal.yodeco.ng/api/media/download/')) {
       const correctedUrl = imageUrl.replace(
-        /https?:\/\/(www\.)?yodeco\.duckdns\.org\/api\/media\/download\//,
-        'https://yodeco-backend.duckdns.org/api/media/download/'
+        /https?:\/\/(www\.)?(yodeco|yodeco-backend|portal\.yodeco)\.(?:duckdns\.org|ng)\/api\/media\/download\//,
+        `${apiBaseUrl}/media/download/`
       );
-      console.log('Corrected backend URL:', correctedUrl);
+      console.log('Corrected domain URL from:', imageUrl, 'to:', correctedUrl);
       return correctedUrl;
     }
+    
+    // If it already has the correct domain (api.yodeco.ng), return as-is
+    if (imageUrl.includes('api.yodeco.ng/api/media/download/')) {
+      console.log('URL already has correct domain:', imageUrl);
+      return imageUrl;
+    }
+    
+    // If it has /api/media/download/ but no domain, add the correct domain
+    if (imageUrl.startsWith('/api/media/download/')) {
+      const correctedUrl = `${apiBaseUrl.replace('/api', '')}${imageUrl}`;
+      console.log('Added domain to relative URL:', correctedUrl);
+      return correctedUrl;
+    }
+    
     return imageUrl;
   }
   
@@ -39,7 +55,7 @@ export const getImageUrl = (imageUrl) => {
     }
   }
   
-  // If it's an S3 object key, construct the backend media URL
+  // If it's an S3 object key (no protocol), construct the backend media URL
   const backendUrl = `${apiBaseUrl}/media/download/${imageUrl}`;
   console.log('Backend media URL constructed:', backendUrl);
   return backendUrl;
