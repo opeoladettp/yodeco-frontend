@@ -51,7 +51,7 @@ const Navigation = () => {
             <Link to="/" className="navigation__brand-link">
               <div className="navigation__logo">
                 <img 
-                  src="/assets/images/yodeco-logo.png"
+                  src="/assets/images/YODECO Logo.png"
                   alt="YODECO Logo" 
                   className="navigation__logo-image"
                   onError={(e) => {
@@ -183,7 +183,7 @@ const Navigation = () => {
             <div className="navigation__drawer-header">
               <div className="navigation__drawer-logo">
                 <img 
-                  src="/assets/images/yodeco-logo.png"
+                  src="/assets/images/YODECO Logo.png"
                   alt="YODECO Logo" 
                   className="navigation__drawer-logo-image"
                   onError={(e) => {
