@@ -40,7 +40,7 @@ const ContentManagementPage = () => {
     try {
       const [categoriesResponse, awardsResponse, nomineesResponse] = await Promise.all([
         api.get('/content/categories'),
-        api.get('/content/awards'),
+        api.get('/content/awards?limit=1000'), // Fetch all awards (up to 1000)
         api.get('/content/nominees')
       ]);
 
