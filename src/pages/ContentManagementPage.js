@@ -20,6 +20,7 @@ const ContentManagementPage = () => {
   });
   const [itemsPerPage] = useState(12); // Show 12 items per page
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Form states
   const [showCategoryForm, setShowCategoryForm] = useState(false);
@@ -410,11 +411,18 @@ const ContentManagementPage = () => {
           </button>
         </div>
         
-        <div className="content-management__search">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="content-management__search-icon">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
-            <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
+        <div className={`content-management__search ${isSearchOpen ? 'content-management__search--open' : ''}`}>
+          <button
+            className="content-management__search-toggle"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            type="button"
+            title="Search"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="content-management__search-icon">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
           <input
             type="text"
             placeholder={`Search ${activeTab}...`}
@@ -423,11 +431,20 @@ const ContentManagementPage = () => {
               setSearchTerm(e.target.value);
               setCurrentPage(prev => ({ ...prev, [activeTab]: 1 })); // Reset to page 1 on search
             }}
+            onBlur={() => {
+              // Close search if empty when clicking outside
+              if (!searchTerm) {
+                setTimeout(() => setIsSearchOpen(false), 200);
+              }
+            }}
             className="content-management__search-input"
           />
           {searchTerm && (
             <button
-              onClick={() => setSearchTerm('')}
+              onClick={() => {
+                setSearchTerm('');
+                setIsSearchOpen(false);
+              }}
               className="content-management__search-clear"
               type="button"
             >
@@ -569,64 +586,103 @@ const ContentManagementPage = () => {
               </button>
             </div>
 
-            {awards.length === 0 ? (
-              <div className="content-management__empty">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                <h3>No Awards Yet</h3>
-                <p>Create awards within categories for nominees to compete for.</p>
-                <button
-                  onClick={handleCreateAward}
-                  className="content-management__empty-button"
-                  type="button"
-                >
-                  Create Award
-                </button>
-              </div>
-            ) : (
-              <div className="content-management__grid">
-                {awards.map(award => (
-                  <div key={award._id} className="content-management__card">
-                    <div className="content-management__card-header">
-                      <h3>{award.title}</h3>
-                      <div className="content-management__card-actions">
-                        <button
-                          onClick={() => handleEditAward(award)}
-                          className="content-management__action-button"
-                          type="button"
-                          title="Edit award"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteAward(award._id)}
-                          className="content-management__action-button content-management__action-button--danger"
-                          type="button"
-                          title="Delete award"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <p className="content-management__card-description">{award.criteria}</p>
-                    <div className="content-management__card-meta">
-                      <span className="content-management__card-category">
-                        {getCategoryName(award.categoryId)}
-                      </span>
-                      <span className={`content-management__card-status ${award.isActive ? 'content-management__card-status--active' : 'content-management__card-status--inactive'}`}>
-                        {award.isActive ? 'Active' : 'Inactive'}
-                      </span>
-                    </div>
+            {(() => {
+              const { items: displayAwards, total } = getDisplayItems(awards, 'awards');
+              const totalPages = getTotalPages(total);
+
+              if (awards.length === 0) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    <h3>No Awards Yet</h3>
+                    <p>Create awards within categories for nominees to compete for.</p>
+                    <button
+                      onClick={handleCreateAward}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Create Award
+                    </button>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              }
+
+              if (displayAwards.length === 0 && searchTerm) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    <h3>No Results Found</h3>
+                    <p>No awards match your search "{searchTerm}"</p>
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <>
+                  <div className="content-management__results-info">
+                    Showing {displayAwards.length} of {total} {total === 1 ? 'award' : 'awards'}
+                  </div>
+                  <div className="content-management__grid">
+                    {displayAwards.map(award => (
+                      <div key={award._id} className="content-management__card">
+                        <div className="content-management__card-header">
+                          <h3>{award.title}</h3>
+                          <div className="content-management__card-actions">
+                            <button
+                              onClick={() => handleEditAward(award)}
+                              className="content-management__action-button"
+                              type="button"
+                              title="Edit award"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteAward(award._id)}
+                              className="content-management__action-button content-management__action-button--danger"
+                              type="button"
+                              title="Delete award"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <p className="content-management__card-description">{award.criteria}</p>
+                        <div className="content-management__card-meta">
+                          <span className="content-management__card-category">
+                            {getCategoryName(award.categoryId)}
+                          </span>
+                          <span className={`content-management__card-status ${award.isActive ? 'content-management__card-status--active' : 'content-management__card-status--inactive'}`}>
+                            {award.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Pagination
+                    currentPage={currentPage.awards}
+                    totalPages={totalPages}
+                    onPageChange={(page) => handlePageChange('awards', page)}
+                  />
+                </>
+              );
+            })()}
           </div>
         )}
 
@@ -647,81 +703,120 @@ const ContentManagementPage = () => {
               </button>
             </div>
 
-            {nominees.length === 0 ? (
-              <div className="content-management__empty">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                <h3>No Nominees Yet</h3>
-                <p>Add nominees to awards so users can vote for them.</p>
-                <button
-                  onClick={handleCreateNominee}
-                  className="content-management__empty-button"
-                  type="button"
-                >
-                  Create Nominee
-                </button>
-              </div>
-            ) : (
-              <div className="content-management__grid">
-                {nominees.map(nominee => (
-                  <div key={nominee._id} className="content-management__card content-management__card--nominee">
-                    <div className="content-management__nominee-image">
-                      {nominee.imageUrl ? (
-                        <img 
-                          src={getImageUrl(nominee.imageUrl)} 
-                          alt={nominee.name}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                      ) : null}
-                      <div 
-                        className="content-management__nominee-placeholder" 
-                        style={{ display: nominee.imageUrl ? 'none' : 'flex' }}
-                      >
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className="content-management__card-header">
-                      <h3>{nominee.name}</h3>
-                      <div className="content-management__card-actions">
-                        <button
-                          onClick={() => handleEditNominee(nominee)}
-                          className="content-management__action-button"
-                          type="button"
-                          title="Edit nominee"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteNominee(nominee._id)}
-                          className="content-management__action-button content-management__action-button--danger"
-                          type="button"
-                          title="Delete nominee"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <p className="content-management__card-description">{nominee.bio}</p>
-                    <div className="content-management__card-meta">
-                      <span className="content-management__card-award">
-                        {getAwardName(nominee.awardId)}
-                      </span>
-                    </div>
+            {(() => {
+              const { items: displayNominees, total } = getDisplayItems(nominees, 'nominees');
+              const totalPages = getTotalPages(total);
+
+              if (nominees.length === 0) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    <h3>No Nominees Yet</h3>
+                    <p>Add nominees to awards so users can vote for them.</p>
+                    <button
+                      onClick={handleCreateNominee}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Create Nominee
+                    </button>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              }
+
+              if (displayNominees.length === 0 && searchTerm) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    <h3>No Results Found</h3>
+                    <p>No nominees match your search "{searchTerm}"</p>
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <>
+                  <div className="content-management__results-info">
+                    Showing {displayNominees.length} of {total} {total === 1 ? 'nominee' : 'nominees'}
+                  </div>
+                  <div className="content-management__grid">
+                    {displayNominees.map(nominee => (
+                      <div key={nominee._id} className="content-management__card content-management__card--nominee">
+                        <div className="content-management__nominee-image">
+                          {nominee.imageUrl ? (
+                            <img 
+                              src={getImageUrl(nominee.imageUrl)} 
+                              alt={nominee.name}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div 
+                            className="content-management__nominee-placeholder" 
+                            style={{ display: nominee.imageUrl ? 'none' : 'flex' }}
+                          >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2"/>
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="content-management__card-header">
+                          <h3>{nominee.name}</h3>
+                          <div className="content-management__card-actions">
+                            <button
+                              onClick={() => handleEditNominee(nominee)}
+                              className="content-management__action-button"
+                              type="button"
+                              title="Edit nominee"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteNominee(nominee._id)}
+                              className="content-management__action-button content-management__action-button--danger"
+                              type="button"
+                              title="Delete nominee"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <p className="content-management__card-description">{nominee.bio}</p>
+                        <div className="content-management__card-meta">
+                          <span className="content-management__card-award">
+                            {getAwardName(nominee.awardId)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Pagination
+                    currentPage={currentPage.nominees}
+                    totalPages={totalPages}
+                    onPageChange={(page) => handlePageChange('nominees', page)}
+                  />
+                </>
+              );
+            })()}
           </div>
         )}
       </div>
