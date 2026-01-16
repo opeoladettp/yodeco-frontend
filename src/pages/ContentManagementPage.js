@@ -12,6 +12,15 @@ const ContentManagementPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState({
+    categories: 1,
+    awards: 1,
+    nominees: 1
+  });
+  const [itemsPerPage] = useState(12); // Show 12 items per page
+  const [searchTerm, setSearchTerm] = useState('');
+
   // Form states
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [showAwardForm, setShowAwardForm] = useState(false);
@@ -212,6 +221,127 @@ const ContentManagementPage = () => {
     return award?.title || 'Unknown Award';
   };
 
+  // Pagination helpers
+  const filterItems = (items, searchTerm) => {
+    if (!searchTerm) return items;
+    const term = searchTerm.toLowerCase();
+    return items.filter(item => {
+      const searchableText = `${item.name || item.title || ''} ${item.description || item.criteria || item.bio || ''}`.toLowerCase();
+      return searchableText.includes(term);
+    });
+  };
+
+  const paginateItems = (items, page) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return items.slice(startIndex, endIndex);
+  };
+
+  const getTotalPages = (itemsCount) => {
+    return Math.ceil(itemsCount / itemsPerPage);
+  };
+
+  const handlePageChange = (tab, newPage) => {
+    setCurrentPage(prev => ({ ...prev, [tab]: newPage }));
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSearchTerm(''); // Clear search when changing tabs
+  };
+
+  // Get filtered and paginated items
+  const getDisplayItems = (items, tab) => {
+    const filtered = filterItems(items, searchTerm);
+    const paginated = paginateItems(filtered, currentPage[tab]);
+    return { items: paginated, total: filtered.length };
+  };
+
+  // Pagination component
+  const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    if (totalPages <= 1) return null;
+
+    const pages = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return (
+      <div className="content-management__pagination">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="content-management__pagination-button"
+          type="button"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Previous
+        </button>
+
+        <div className="content-management__pagination-pages">
+          {startPage > 1 && (
+            <>
+              <button
+                onClick={() => onPageChange(1)}
+                className="content-management__pagination-page"
+                type="button"
+              >
+                1
+              </button>
+              {startPage > 2 && <span className="content-management__pagination-ellipsis">...</span>}
+            </>
+          )}
+
+          {pages.map(page => (
+            <button
+              key={page}
+              onClick={() => onPageChange(page)}
+              className={`content-management__pagination-page ${page === currentPage ? 'content-management__pagination-page--active' : ''}`}
+              type="button"
+            >
+              {page}
+            </button>
+          ))}
+
+          {endPage < totalPages && (
+            <>
+              {endPage < totalPages - 1 && <span className="content-management__pagination-ellipsis">...</span>}
+              <button
+                onClick={() => onPageChange(totalPages)}
+                className="content-management__pagination-page"
+                type="button"
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
+        </div>
+
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="content-management__pagination-button"
+          type="button"
+        >
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="content-management">
@@ -258,26 +388,54 @@ const ContentManagementPage = () => {
       <div className="content-management__tabs">
         <div className="content-management__tabs-container">
           <button
-            onClick={() => setActiveTab('categories')}
+            onClick={() => handleTabChange('categories')}
             className={`content-management__tab ${activeTab === 'categories' ? 'content-management__tab--active' : ''}`}
             type="button"
           >
             Categories ({categories.length})
           </button>
           <button
-            onClick={() => setActiveTab('awards')}
+            onClick={() => handleTabChange('awards')}
             className={`content-management__tab ${activeTab === 'awards' ? 'content-management__tab--active' : ''}`}
             type="button"
           >
             Awards ({awards.length})
           </button>
           <button
-            onClick={() => setActiveTab('nominees')}
+            onClick={() => handleTabChange('nominees')}
             className={`content-management__tab ${activeTab === 'nominees' ? 'content-management__tab--active' : ''}`}
             type="button"
           >
             Nominees ({nominees.length})
           </button>
+        </div>
+        
+        <div className="content-management__search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="content-management__search-icon">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+          <input
+            type="text"
+            placeholder={`Search ${activeTab}...`}
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(prev => ({ ...prev, [activeTab]: 1 })); // Reset to page 1 on search
+            }}
+            className="content-management__search-input"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="content-management__search-clear"
+              type="button"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
@@ -299,59 +457,98 @@ const ContentManagementPage = () => {
               </button>
             </div>
 
-            {categories.length === 0 ? (
-              <div className="content-management__empty">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2"/>
-                </svg>
-                <h3>No Categories Yet</h3>
-                <p>Create your first category to organize awards and nominees.</p>
-                <button
-                  onClick={handleCreateCategory}
-                  className="content-management__empty-button"
-                  type="button"
-                >
-                  Create Category
-                </button>
-              </div>
-            ) : (
-              <div className="content-management__grid">
-                {categories.map(category => (
-                  <div key={category._id} className="content-management__card">
-                    <div className="content-management__card-header">
-                      <h3>{category.name}</h3>
-                      <div className="content-management__card-actions">
-                        <button
-                          onClick={() => handleEditCategory(category)}
-                          className="content-management__action-button"
-                          type="button"
-                          title="Edit category"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleDeleteCategory(category._id)}
-                          className="content-management__action-button content-management__action-button--danger"
-                          type="button"
-                          title="Delete category"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <p className="content-management__card-description">{category.description}</p>
-                    <div className="content-management__card-meta">
-                      <span className="content-management__card-slug">/{category.slug}</span>
-                    </div>
+            {(() => {
+              const { items: displayCategories, total } = getDisplayItems(categories, 'categories');
+              const totalPages = getTotalPages(total);
+
+              if (categories.length === 0) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2"/>
+                    </svg>
+                    <h3>No Categories Yet</h3>
+                    <p>Create your first category to organize awards and nominees.</p>
+                    <button
+                      onClick={handleCreateCategory}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Create Category
+                    </button>
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              }
+
+              if (displayCategories.length === 0 && searchTerm) {
+                return (
+                  <div className="content-management__empty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    <h3>No Results Found</h3>
+                    <p>No categories match your search "{searchTerm}"</p>
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="content-management__empty-button"
+                      type="button"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <>
+                  <div className="content-management__results-info">
+                    Showing {displayCategories.length} of {total} {total === 1 ? 'category' : 'categories'}
+                  </div>
+                  <div className="content-management__grid">
+                    {displayCategories.map(category => (
+                      <div key={category._id} className="content-management__card">
+                        <div className="content-management__card-header">
+                          <h3>{category.name}</h3>
+                          <div className="content-management__card-actions">
+                            <button
+                              onClick={() => handleEditCategory(category)}
+                              className="content-management__action-button"
+                              type="button"
+                              title="Edit category"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
+                                <path d="M18.5 2.5a2.121 2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteCategory(category._id)}
+                              className="content-management__action-button content-management__action-button--danger"
+                              type="button"
+                              title="Delete category"
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <p className="content-management__card-description">{category.description}</p>
+                        <div className="content-management__card-meta">
+                          <span className="content-management__card-slug">/{category.slug}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Pagination
+                    currentPage={currentPage.categories}
+                    totalPages={totalPages}
+                    onPageChange={(page) => handlePageChange('categories', page)}
+                  />
+                </>
+              );
+            })()}
           </div>
         )}
 
