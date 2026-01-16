@@ -151,6 +151,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  gap: 16px;
 }
 
 .content-management__tab-header h2 {
@@ -639,6 +640,7 @@
   height: 48px;
   transition: width 0.3s ease;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .content-management__search--open {
