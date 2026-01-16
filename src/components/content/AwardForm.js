@@ -75,14 +75,6 @@ const AwardForm = ({
         [name]: null
       }));
     }
-
-    // Auto-close the picker by blurring the input after a short delay
-    // This allows the user to see the selected value before closing
-    setTimeout(() => {
-      if (e.target && typeof e.target.blur === 'function') {
-        e.target.blur();
-      }
-    }, 100);
   };
 
   const validateForm = () => {
