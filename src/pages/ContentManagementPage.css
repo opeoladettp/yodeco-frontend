@@ -152,6 +152,10 @@
   justify-content: space-between;
   margin-bottom: 24px;
   gap: 16px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
 }
 
 .content-management__tab-header h2 {
