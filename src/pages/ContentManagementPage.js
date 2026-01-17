@@ -39,9 +39,9 @@ const ContentManagementPage = () => {
 
     try {
       const [categoriesResponse, awardsResponse, nomineesResponse] = await Promise.all([
-        api.get('/content/categories'),
+        api.get('/content/categories?limit=1000'), // Fetch all categories (up to 1000)
         api.get('/content/awards?limit=1000'), // Fetch all awards (up to 1000)
-        api.get('/content/nominees')
+        api.get('/content/nominees?limit=1000') // Fetch all nominees (up to 1000)
       ]);
 
       setCategories(categoriesResponse.data.categories || []);
