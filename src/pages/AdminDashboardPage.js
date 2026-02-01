@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserManagement, SystemMonitoring } from '../components/admin';
+import { UserManagement, SystemMonitoring, PendingNominations } from '../components/admin';
 import VoteBiasManager from '../components/admin/VoteBiasManager';
 import './AdminDashboardPage.css';
 
@@ -27,6 +27,16 @@ const AdminDashboardPage = () => {
           User Management
         </button>
         <button
+          onClick={() => setActiveTab('nominations')}
+          className={`admin-dashboard__tab ${activeTab === 'nominations' ? 'admin-dashboard__tab--active' : ''}`}
+          type="button"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" strokeWidth="2"/>
+          </svg>
+          Pending Nominations
+        </button>
+        <button
           onClick={() => setActiveTab('vote-bias')}
           className={`admin-dashboard__tab ${activeTab === 'vote-bias' ? 'admin-dashboard__tab--active' : ''}`}
           type="button"
@@ -52,6 +62,12 @@ const AdminDashboardPage = () => {
         {activeTab === 'users' && (
           <div className="admin-dashboard__tab-content">
             <UserManagement />
+          </div>
+        )}
+
+        {activeTab === 'nominations' && (
+          <div className="admin-dashboard__tab-content">
+            <PendingNominations />
           </div>
         )}
 
