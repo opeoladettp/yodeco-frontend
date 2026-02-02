@@ -98,8 +98,8 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Add request ID for tracking
-    config.headers['X-Request-ID'] = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // REMOVED: X-Request-ID header to avoid CORS preflight issues with Railway proxy
+    // config.headers['X-Request-ID'] = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // Add Authorization header if token exists in localStorage (fallback for cross-subdomain issues)
     const token = localStorage.getItem('accessToken');
@@ -325,7 +325,7 @@ export const submitVoteWithBiometric = async (voteData) => {
       
       return await api.post('/votes', voteData, {
         headers: {
-          'X-Biometric-Verified': 'true',
+          'Biometric-Verified': 'true', // Changed from X-Biometric-Verified to avoid CORS preflight
           'Idempotency-Key': idempotencyKey
         }
       });
