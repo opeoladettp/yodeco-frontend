@@ -9,18 +9,38 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [isPromoting, setIsPromoting] = useState({});
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 20,
+    total: 0,
+    pages: 0
+  });
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [pagination.page, searchTerm, roleFilter]);
 
   const fetchUsers = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await api.get('/admin/users');
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit
+      });
+      
+      if (searchTerm) {
+        params.append('search', searchTerm);
+      }
+      
+      if (roleFilter !== 'all') {
+        params.append('role', roleFilter);
+      }
+
+      const response = await api.get(`/admin/users?${params}`);
       setUsers(response.data.users || []);
+      setPagination(response.data.pagination || pagination);
     } catch (error) {
       console.error('Error fetching users:', error);
       
@@ -59,12 +79,15 @@ const UserManagement = () => {
     }
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === 'all' || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
+  };
+
+  const handleRoleFilterChange = (e) => {
+    setRoleFilter(e.target.value);
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
+  };
 
   const getRoleDisplayName = (role) => {
     switch (role) {
@@ -153,20 +176,8 @@ const UserManagement = () => {
         <h2>User Management</h2>
         <div className="user-management__stats">
           <div className="user-management__stat">
-            <span className="user-management__stat-number">{users.length}</span>
+            <span className="user-management__stat-number">{pagination.total}</span>
             <span className="user-management__stat-label">Total Users</span>
-          </div>
-          <div className="user-management__stat">
-            <span className="user-management__stat-number">
-              {users.filter(u => u.role === 'System_Admin').length}
-            </span>
-            <span className="user-management__stat-label">Admins</span>
-          </div>
-          <div className="user-management__stat">
-            <span className="user-management__stat-number">
-              {users.filter(u => u.role === 'Panelist').length}
-            </span>
-            <span className="user-management__stat-label">Panelists</span>
           </div>
         </div>
       </div>
@@ -181,14 +192,14 @@ const UserManagement = () => {
             type="text"
             placeholder="Search users by name or email..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="user-management__search-input"
           />
         </div>
 
         <select
           value={roleFilter}
-          onChange={(e) => setRoleFilter(e.target.value)}
+          onChange={handleRoleFilterChange}
           className="user-management__role-filter"
         >
           <option value="all">All Roles</option>
@@ -198,7 +209,7 @@ const UserManagement = () => {
         </select>
       </div>
 
-      {filteredUsers.length === 0 ? (
+      {users.length === 0 ? (
         <div className="user-management__empty">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2"/>
@@ -212,81 +223,114 @@ const UserManagement = () => {
           </p>
         </div>
       ) : (
-        <div className="user-management__table-container">
-          <table className="user-management__table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th>Last Login</th>
-                <th>Registered</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map(user => (
-                <tr key={user._id} className="user-management__row">
-                  <td className="user-management__user-cell">
-                    <div className="user-management__user-info">
-                      <div className="user-management__user-avatar">
-                        {user.name && user.name.length > 0 ? user.name.charAt(0).toUpperCase() : (user.email && user.email.length > 0 ? user.email.charAt(0).toUpperCase() : 'U')}
-                      </div>
-                      <div className="user-management__user-details">
-                        <div className="user-management__user-name">
-                          {user.name || user.email || 'Unknown User'}
-                        </div>
-                        <div className="user-management__user-email">
-                          {user.email || 'No email'}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={`user-management__role-badge ${getRoleBadgeClass(user.role)}`}>
-                      {getRoleDisplayName(user.role)}
-                    </span>
-                  </td>
-                  <td className="user-management__date-cell">
-                    {formatDate(user.lastLogin)}
-                  </td>
-                  <td className="user-management__date-cell">
-                    {formatDate(user.createdAt)}
-                  </td>
-                  <td className="user-management__actions-cell">
-                    {getAvailablePromotions(user.role).length > 0 ? (
-                      <div className="user-management__promotion-dropdown">
-                        <select
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              handlePromoteUser(user._id, e.target.value);
-                              e.target.value = ''; // Reset selection
-                            }
-                          }}
-                          disabled={isPromoting[user._id]}
-                          className="user-management__promote-select"
-                          defaultValue=""
-                        >
-                          <option value="" disabled>
-                            {isPromoting[user._id] ? 'Promoting...' : 'Promote to...'}
-                          </option>
-                          {getAvailablePromotions(user.role).map(role => (
-                            <option key={role} value={role}>
-                              {getRoleDisplayName(role)}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    ) : (
-                      <span className="user-management__no-actions">
-                        Highest role
-                      </span>
-                    )}
-                  </td>
+        <>
+          <div className="user-management__table-container">
+            <table className="user-management__table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Last Login</th>
+                  <th>Registered</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {users.map(user => (
+                  <tr key={user._id} className="user-management__row">
+                    <td className="user-management__user-cell">
+                      <div className="user-management__user-info">
+                        <div className="user-management__user-avatar">
+                          {user.name && user.name.length > 0 ? user.name.charAt(0).toUpperCase() : (user.email && user.email.length > 0 ? user.email.charAt(0).toUpperCase() : 'U')}
+                        </div>
+                        <div className="user-management__user-details">
+                          <div className="user-management__user-name">
+                            {user.name || user.email || 'Unknown User'}
+                          </div>
+                          <div className="user-management__user-email">
+                            {user.email || 'No email'}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`user-management__role-badge ${getRoleBadgeClass(user.role)}`}>
+                        {getRoleDisplayName(user.role)}
+                      </span>
+                    </td>
+                    <td className="user-management__date-cell">
+                      {formatDate(user.lastLogin)}
+                    </td>
+                    <td className="user-management__date-cell">
+                      {formatDate(user.createdAt)}
+                    </td>
+                    <td className="user-management__actions-cell">
+                      {getAvailablePromotions(user.role).length > 0 ? (
+                        <div className="user-management__promotion-dropdown">
+                          <select
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                handlePromoteUser(user._id, e.target.value);
+                                e.target.value = ''; // Reset selection
+                              }
+                            }}
+                            disabled={isPromoting[user._id]}
+                            className="user-management__promote-select"
+                            defaultValue=""
+                          >
+                            <option value="" disabled>
+                              {isPromoting[user._id] ? 'Promoting...' : 'Promote to...'}
+                            </option>
+                            {getAvailablePromotions(user.role).map(role => (
+                              <option key={role} value={role}>
+                                {getRoleDisplayName(role)}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ) : (
+                        <span className="user-management__no-actions">
+                          Highest role
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          {pagination.pages > 1 && (
+            <div className="user-management__pagination">
+              <button
+                onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                disabled={pagination.page === 1}
+                className="user-management__page-button"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                Previous
+              </button>
+              
+              <span className="user-management__page-info">
+                Page {pagination.page} of {pagination.pages} ({pagination.total} users)
+              </span>
+              
+              <button
+                onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                disabled={pagination.page === pagination.pages}
+                className="user-management__page-button"
+              >
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

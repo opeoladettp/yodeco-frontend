@@ -1,7 +1,41 @@
+/* CSS Custom Properties for Theme Support */
+:root {
+  /* Light theme colors */
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --text-body: #333;
+  --text-muted: #6c757d;
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fa;
+  --bg-hover: #f8f9fa;
+  --border-color: #e1e5e9;
+  
+  /* Dark theme colors */
+  --text-primary-dark: #ffffff;
+  --text-secondary-dark: #b0b0b0;
+  --text-body-dark: #d0d0d0;
+  --text-muted-dark: #888;
+  --bg-primary-dark: #1a1a1a;
+  --bg-secondary-dark: #2a2a2a;
+  --bg-tertiary-dark: #1a1a1a;
+  --bg-hover-dark: #3a3a3a;
+  --border-color-dark: #404040;
+}
+
 .pending-nominations {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: transparent;
+  color: var(--text-primary, #1a1a1a);
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations {
+    color: var(--text-primary-dark, #ffffff);
+  }
 }
 
 .pending-nominations__header {
@@ -14,15 +48,26 @@
 
 .pending-nominations__title-section h2 {
   margin: 0 0 0.5rem 0;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
   font-size: 1.75rem;
   font-weight: 600;
 }
 
 .pending-nominations__title-section p {
   margin: 0;
-  color: #666;
+  color: var(--text-secondary, #666);
   font-size: 1rem;
+}
+
+/* Dark theme support for title section */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__title-section h2 {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__title-section p {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
 }
 
 .pending-nominations__filters {
@@ -33,18 +78,33 @@
 
 .pending-nominations__filter-select {
   padding: 0.75rem 1rem;
-  border: 2px solid #e1e5e9;
+  border: 2px solid var(--border-color, #e1e5e9);
   border-radius: 8px;
-  background: white;
+  background: var(--bg-secondary, #ffffff);
+  color: var(--text-primary, #1a1a1a);
   font-size: 0.9rem;
   min-width: 200px;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .pending-nominations__filter-select:focus {
   outline: none;
   border-color: #007bff;
+}
+
+/* Dark theme support for filter select */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__filter-select {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    color: var(--text-primary-dark, #ffffff);
+    border-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__filter-select option {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    color: var(--text-primary-dark, #ffffff);
+  }
 }
 
 .pending-nominations__loading,
@@ -55,6 +115,15 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
+  color: var(--text-primary, #1a1a1a);
+}
+
+/* Dark theme support for loading and error states */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__loading,
+  .pending-nominations__error {
+    color: var(--text-primary-dark, #ffffff);
+  }
 }
 
 .pending-nominations__spinner {
@@ -100,9 +169,9 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  background: #f8f9fa;
+  background: var(--bg-secondary, #f8f9fa);
   border-radius: 12px;
-  border: 2px dashed #dee2e6;
+  border: 2px dashed var(--border-color, #dee2e6);
 }
 
 .pending-nominations__empty svg {
@@ -112,14 +181,30 @@
 
 .pending-nominations__empty h3 {
   margin: 0 0 0.5rem 0;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
   font-size: 1.25rem;
 }
 
 .pending-nominations__empty p {
   margin: 0 0 1rem 0;
-  color: #666;
+  color: var(--text-secondary, #666);
   max-width: 400px;
+}
+
+/* Dark theme support for empty state */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__empty {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    border-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__empty h3 {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__empty p {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
 }
 
 .pending-nominations__clear-filter {
@@ -173,8 +258,8 @@
 }
 
 .pending-nominations__card {
-  background: white;
-  border: 1px solid #e1e5e9;
+  background: var(--bg-secondary, #ffffff);
+  border: 1px solid var(--border-color, #e1e5e9);
   border-radius: 12px;
   padding: 1.5rem;
   transition: all 0.2s ease;
@@ -184,6 +269,20 @@
 .pending-nominations__card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: #007bff;
+}
+
+/* Dark theme support for cards */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__card {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    border-color: var(--border-color-dark, #404040);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .pending-nominations__card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: #007bff;
+  }
 }
 
 .pending-nominations__card-header {
@@ -207,15 +306,28 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #e1e5e9;
+  border: 2px solid var(--border-color, #e1e5e9);
 }
 
 .pending-nominations__nominee-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa;
-  color: #6c757d;
+  background: var(--bg-tertiary, #f8f9fa);
+  color: var(--text-muted, #6c757d);
+}
+
+/* Dark theme support for nominee images */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__nominee-image,
+  .pending-nominations__nominee-placeholder {
+    border-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__nominee-placeholder {
+    background: var(--bg-tertiary-dark, #1a1a1a);
+    color: var(--text-muted-dark, #888);
+  }
 }
 
 .pending-nominations__nominee-details {
@@ -226,7 +338,7 @@
   margin: 0 0 0.25rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
 }
 
 .pending-nominations__award-title {
@@ -239,7 +351,18 @@
 .pending-nominations__category {
   margin: 0;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary, #666);
+}
+
+/* Dark theme support for nominee details */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__nominee-name {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__category {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
 }
 
 .pending-nominations__actions {
@@ -289,7 +412,7 @@
 }
 
 .pending-nominations__card-body {
-  border-top: 1px solid #e1e5e9;
+  border-top: 1px solid var(--border-color, #e1e5e9);
   padding-top: 1rem;
 }
 
@@ -297,14 +420,29 @@
   margin: 0 0 0.5rem 0;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
 }
 
 .pending-nominations__bio p {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: var(--text-body, #333);
   line-height: 1.5;
   font-size: 0.95rem;
+}
+
+/* Dark theme support for card body */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__card-body {
+    border-top-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__bio h4 {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__bio p {
+    color: var(--text-body-dark, #d0d0d0);
+  }
 }
 
 .pending-nominations__metadata {
@@ -315,11 +453,22 @@
 
 .pending-nominations__meta-item {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary, #666);
 }
 
 .pending-nominations__meta-item strong {
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
+}
+
+/* Dark theme support for metadata */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__meta-item {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
+  
+  .pending-nominations__meta-item strong {
+    color: var(--text-primary-dark, #ffffff);
+  }
 }
 
 .pending-nominations__pagination {
@@ -336,8 +485,9 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: white;
-  border: 1px solid #e1e5e9;
+  background: var(--bg-secondary, #ffffff);
+  border: 1px solid var(--border-color, #e1e5e9);
+  color: var(--text-primary, #1a1a1a);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -345,7 +495,7 @@
 }
 
 .pending-nominations__page-button:hover:not(:disabled) {
-  background: #f8f9fa;
+  background: var(--bg-hover, #f8f9fa);
   border-color: #007bff;
 }
 
@@ -356,8 +506,26 @@
 
 .pending-nominations__page-info {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary, #666);
   padding: 0 1rem;
+}
+
+/* Dark theme support for pagination */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__page-button {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    border-color: var(--border-color-dark, #404040);
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__page-button:hover:not(:disabled) {
+    background: var(--bg-hover-dark, #3a3a3a);
+    border-color: #007bff;
+  }
+  
+  .pending-nominations__page-info {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
 }
 
 /* Modal Styles */
@@ -386,7 +554,7 @@
 
 .pending-nominations__modal-content {
   position: relative;
-  background: white;
+  background: var(--bg-primary, #ffffff);
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   max-width: 500px;
@@ -400,7 +568,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 1.5rem 0 1.5rem;
-  border-bottom: 1px solid #e1e5e9;
+  border-bottom: 1px solid var(--border-color, #e1e5e9);
   margin-bottom: 1.5rem;
 }
 
@@ -408,7 +576,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
 }
 
 .pending-nominations__modal-close {
@@ -416,14 +584,39 @@
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: #666;
+  color: var(--text-secondary, #666);
   border-radius: 4px;
   transition: all 0.2s ease;
 }
 
 .pending-nominations__modal-close:hover {
-  background: #f8f9fa;
-  color: #1a1a1a;
+  background: var(--bg-hover, #f8f9fa);
+  color: var(--text-primary, #1a1a1a);
+}
+
+/* Dark theme support for modal */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__modal-content {
+    background: var(--bg-primary-dark, #1a1a1a);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .pending-nominations__modal-header {
+    border-bottom-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__modal-header h3 {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__modal-close {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
+  
+  .pending-nominations__modal-close:hover {
+    background: var(--bg-hover-dark, #3a3a3a);
+    color: var(--text-primary-dark, #ffffff);
+  }
 }
 
 .pending-nominations__modal-body {
@@ -432,7 +625,7 @@
 
 .pending-nominations__modal-body p {
   margin: 0 0 1.5rem 0;
-  color: #333;
+  color: var(--text-body, #333);
   line-height: 1.5;
 }
 
@@ -444,7 +637,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--text-primary, #1a1a1a);
   font-size: 0.9rem;
 }
 
@@ -452,11 +645,13 @@
 .pending-nominations__textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e1e5e9;
+  border: 2px solid var(--border-color, #e1e5e9);
   border-radius: 6px;
   font-size: 0.9rem;
   transition: border-color 0.2s ease;
   font-family: inherit;
+  background: var(--bg-secondary, #ffffff);
+  color: var(--text-primary, #1a1a1a);
 }
 
 .pending-nominations__input:focus,
@@ -473,8 +668,30 @@
 .pending-nominations__form-group small {
   display: block;
   margin-top: 0.25rem;
-  color: #666;
+  color: var(--text-secondary, #666);
   font-size: 0.8rem;
+}
+
+/* Dark theme support for modal body */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__modal-body p {
+    color: var(--text-body-dark, #d0d0d0);
+  }
+  
+  .pending-nominations__form-group label {
+    color: var(--text-primary-dark, #ffffff);
+  }
+  
+  .pending-nominations__input,
+  .pending-nominations__textarea {
+    background: var(--bg-secondary-dark, #2a2a2a);
+    color: var(--text-primary-dark, #ffffff);
+    border-color: var(--border-color-dark, #404040);
+  }
+  
+  .pending-nominations__form-group small {
+    color: var(--text-secondary-dark, #b0b0b0);
+  }
 }
 
 .pending-nominations__modal-actions {
@@ -482,9 +699,17 @@
   justify-content: flex-end;
   gap: 1rem;
   padding: 1.5rem;
-  border-top: 1px solid #e1e5e9;
-  background: #f8f9fa;
+  border-top: 1px solid var(--border-color, #e1e5e9);
+  background: var(--bg-tertiary, #f8f9fa);
   border-radius: 0 0 12px 12px;
+}
+
+/* Dark theme support for modal actions */
+@media (prefers-color-scheme: dark) {
+  .pending-nominations__modal-actions {
+    border-top-color: var(--border-color-dark, #404040);
+    background: var(--bg-tertiary-dark, #1a1a1a);
+  }
 }
 
 .pending-nominations__modal-button {

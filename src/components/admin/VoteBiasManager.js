@@ -14,6 +14,12 @@ const VoteBiasManager = () => {
   const [error, setError] = useState(null);
   const [showBiasForm, setShowBiasForm] = useState(false);
   const [editingBias, setEditingBias] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
   
   // Form state
   const [formData, setFormData] = useState({
@@ -32,7 +38,7 @@ const VoteBiasManager = () => {
     if (selectedAward) {
       fetchAwardData();
     }
-  }, [selectedAward]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedAward, pagination.page]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchAwards = async () => {
     try {
@@ -64,13 +70,19 @@ const VoteBiasManager = () => {
     try {
       setIsLoading(true);
       
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit
+      });
+      
       // Fetch bias entries and nominees for the selected award
       const [biasResponse, nomineesResponse] = await Promise.all([
-        api.get(`/admin/vote-bias/award/${selectedAward._id}`),
+        api.get(`/admin/vote-bias/award/${selectedAward._id}?${params}`),
         api.get(`/content/awards/${selectedAward._id}/nominees`)
       ]);
       
       setBiasEntries(biasResponse.data.biasEntries || []);
+      setPagination(biasResponse.data.pagination || pagination);
       setNominees(nomineesResponse.data.nominees || []);
     } catch (error) {
       console.error('Error fetching award data:', error);
@@ -84,6 +96,7 @@ const VoteBiasManager = () => {
     setSelectedAward(award);
     setShowBiasForm(false);
     setEditingBias(null);
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
     resetForm();
   };
 
@@ -261,47 +274,80 @@ const VoteBiasManager = () => {
             <>
               {/* Current Bias Entries */}
               <div className="vote-bias-manager__bias-list">
-                <h4>Current Bias Adjustments</h4>
+                <h4>Current Bias Adjustments ({pagination.total} total)</h4>
                 {biasEntries.length === 0 ? (
                   <div className="vote-bias-manager__empty">
                     No bias adjustments applied to this award.
                   </div>
                 ) : (
-                  <div className="vote-bias-manager__bias-entries">
-                    {biasEntries.map(bias => (
-                      <div key={bias._id} className="vote-bias-manager__bias-entry">
-                        <div className="vote-bias-manager__bias-info">
-                          <h5>{bias.nominee?.name || 'Unknown Nominee'}</h5>
-                          <div className="vote-bias-manager__bias-amount">
-                            +{bias.biasAmount} votes
+                  <>
+                    <div className="vote-bias-manager__bias-entries">
+                      {biasEntries.map(bias => (
+                        <div key={bias._id} className="vote-bias-manager__bias-entry">
+                          <div className="vote-bias-manager__bias-info">
+                            <h5>{bias.nominee?.name || 'Unknown Nominee'}</h5>
+                            <div className="vote-bias-manager__bias-amount">
+                              +{bias.biasAmount} votes
+                            </div>
+                            <div className="vote-bias-manager__bias-reason">
+                              {bias.reason}
+                            </div>
+                            <div className="vote-bias-manager__bias-meta">
+                              Applied by {bias.appliedBy?.name} on{' '}
+                              {new Date(bias.appliedAt).toLocaleDateString()}
+                            </div>
                           </div>
-                          <div className="vote-bias-manager__bias-reason">
-                            {bias.reason}
-                          </div>
-                          <div className="vote-bias-manager__bias-meta">
-                            Applied by {bias.appliedBy?.name} on{' '}
-                            {new Date(bias.appliedAt).toLocaleDateString()}
+                          <div className="vote-bias-manager__bias-actions">
+                            <button
+                              onClick={() => handleEditBias(bias)}
+                              className="vote-bias-manager__edit-button"
+                              disabled={isSubmitting}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleRemoveBias(bias._id)}
+                              className="vote-bias-manager__remove-button"
+                              disabled={isSubmitting}
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
-                        <div className="vote-bias-manager__bias-actions">
-                          <button
-                            onClick={() => handleEditBias(bias)}
-                            className="vote-bias-manager__edit-button"
-                            disabled={isSubmitting}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleRemoveBias(bias._id)}
-                            className="vote-bias-manager__remove-button"
-                            disabled={isSubmitting}
-                          >
-                            Remove
-                          </button>
-                        </div>
+                      ))}
+                    </div>
+
+                    {/* Pagination */}
+                    {pagination.pages > 1 && (
+                      <div className="vote-bias-manager__pagination">
+                        <button
+                          onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                          disabled={pagination.page === 1}
+                          className="vote-bias-manager__page-button"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2"/>
+                          </svg>
+                          Previous
+                        </button>
+                        
+                        <span className="vote-bias-manager__page-info">
+                          Page {pagination.page} of {pagination.pages}
+                        </span>
+                        
+                        <button
+                          onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                          disabled={pagination.page === pagination.pages}
+                          className="vote-bias-manager__page-button"
+                        >
+                          Next
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2"/>
+                          </svg>
+                        </button>
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </>
                 )}
               </div>
 

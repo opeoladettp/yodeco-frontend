@@ -268,6 +268,48 @@
   cursor: not-allowed;
 }
 
+/* Pagination */
+.vote-bias-manager__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.vote-bias-manager__page-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.vote-bias-manager__page-button:hover:not(:disabled) {
+  background: var(--yodeco-primary);
+  color: white;
+  border-color: var(--yodeco-primary);
+}
+
+.vote-bias-manager__page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vote-bias-manager__page-info {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  padding: 0 1rem;
+  text-align: center;
+}
+
 /* Form Modal */
 .vote-bias-manager__form-overlay {
   position: fixed;
@@ -464,6 +506,21 @@
 
   .vote-bias-manager__bias-actions {
     align-self: flex-start;
+  }
+
+  .vote-bias-manager__pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .vote-bias-manager__page-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vote-bias-manager__page-info {
+    padding: 0;
+    font-size: 0.8rem;
   }
 
   .vote-bias-manager__form-overlay {
