@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { UserManagement, SystemMonitoring, PendingNominations } from '../components/admin';
+import { UserManagement, SystemMonitoring, PendingNominations, RateLimitManager } from '../components/admin';
 import VoteBiasManager from '../components/admin/VoteBiasManager';
 import './AdminDashboardPage.css';
 
@@ -56,6 +56,16 @@ const AdminDashboardPage = () => {
           </svg>
           System Monitoring
         </button>
+        <button
+          onClick={() => setActiveTab('rate-limit')}
+          className={`admin-dashboard__tab ${activeTab === 'rate-limit' ? 'admin-dashboard__tab--active' : ''}`}
+          type="button"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" strokeWidth="2"/>
+          </svg>
+          Rate Limits
+        </button>
       </div>
 
       <div className="admin-dashboard__content">
@@ -80,6 +90,12 @@ const AdminDashboardPage = () => {
         {activeTab === 'monitoring' && (
           <div className="admin-dashboard__tab-content">
             <SystemMonitoring />
+          </div>
+        )}
+
+        {activeTab === 'rate-limit' && (
+          <div className="admin-dashboard__tab-content">
+            <RateLimitManager />
           </div>
         )}
       </div>
