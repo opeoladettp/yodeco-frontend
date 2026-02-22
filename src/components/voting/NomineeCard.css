@@ -112,7 +112,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, rgba(57, 130, 19, 0.95) 0%, rgba(45, 107, 15, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(57, 130, 19, 0.75) 0%, rgba(45, 107, 15, 0.75) 100%);
   color: white;
   padding: 20px 28px;
   border-radius: 50%;
@@ -402,7 +402,7 @@
   }
 
   .nominee-card__vote-count {
-    background: linear-gradient(135deg, rgba(193, 158, 51, 0.95) 0%, rgba(166, 133, 43, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(193, 158, 51, 0.75) 0%, rgba(166, 133, 43, 0.75) 100%);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(193, 158, 51, 0.3);
   }
 
