@@ -29,9 +29,11 @@ const VotingPage = () => {
   const [selectedAwardForNomination, setSelectedAwardForNomination] = useState(null);
   const [isSubmittingVote, setIsSubmittingVote] = useState(false);
   const [isSubmittingNomination, setIsSubmittingNomination] = useState(false);
+  const [voteCounts, setVoteCounts] = useState({});
 
   useEffect(() => {
     fetchVotingData();
+    fetchVoteCounts();
   }, []);
 
   const fetchVotingData = async () => {
@@ -63,6 +65,24 @@ const VotingPage = () => {
       setError(error.response?.data?.error?.message || 'Failed to load voting data');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchVoteCounts = async () => {
+    try {
+      const response = await api.get('/votes/counts');
+      const counts = {};
+      
+      // Create a map of vote counts by nominee ID
+      response.data.voteCounts?.forEach(item => {
+        counts[item.nomineeId] = item.count;
+      });
+      
+      setVoteCounts(counts);
+      console.log('📊 Vote counts loaded:', counts);
+    } catch (error) {
+      console.error('Error fetching vote counts:', error);
+      // Don't fail the page if vote counts can't be loaded
     }
   };
 
@@ -131,6 +151,9 @@ const VotingPage = () => {
           timestamp: new Date().toISOString()
         }
       }));
+
+      // Refresh vote counts to show updated numbers
+      fetchVoteCounts();
 
       // Reset selection
       setSelectedNominee(null);
@@ -492,6 +515,7 @@ const VotingPage = () => {
                             <div className="voting-page__nominee-grid">
                               {award.nominees.map(nominee => {
                                 const canVote = isAuthenticated && !hasUserVoted(award._id);
+                                const nomineeVoteCount = voteCounts[nominee._id] || 0;
                                 
                                 return (
                                   <NomineeCard
@@ -501,6 +525,8 @@ const VotingPage = () => {
                                     onSelect={canVote ? handleNomineeSelect : null}
                                     disabled={!canVote}
                                     isSelected={getUserVoteForAward(award._id)?.nomineeId === nominee._id}
+                                    voteCount={nomineeVoteCount}
+                                    showVoteCount={true}
                                   />
                                 );
                               })}
