@@ -157,6 +157,9 @@ const VoteCountDisplay = ({
               <span className="vote-count-display__total-label">
                 Total Vote{totalVotes !== 1 ? 's' : ''}
               </span>
+              <span className="vote-count-display__total-note">
+                (includes bias adjustments)
+              </span>
             </div>
           </div>
 

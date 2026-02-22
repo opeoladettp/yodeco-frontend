@@ -117,6 +117,13 @@
   font-weight: 500;
 }
 
+.vote-count-display__total-note {
+  font-size: 11px;
+  color: #9aa0a6;
+  font-style: italic;
+  margin-top: 2px;
+}
+
 .vote-count-display__list {
   display: flex;
   flex-direction: column;
@@ -459,6 +466,10 @@
 
   .vote-count-display__total-label {
     color: #9aa0a6;
+  }
+
+  .vote-count-display__total-note {
+    color: #5f6368;
   }
 
   .vote-count-display__item {
