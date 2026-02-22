@@ -112,9 +112,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, rgba(57, 130, 19, 0.75) 0%, rgba(45, 107, 15, 0.75) 100%);
+  background: linear-gradient(135deg, rgba(57, 130, 19, 0.6) 0%, rgba(45, 107, 15, 0.6) 100%);
   color: white;
-  padding: 20px 28px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -123,8 +122,8 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.2);
   z-index: 3;
-  min-width: 80px;
-  min-height: 80px;
+  width: 100px;
+  height: 100px;
   transition: all 0.3s ease;
 }
 
@@ -134,14 +133,15 @@
 }
 
 .nominee-card__vote-number {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 900;
   line-height: 1;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
 }
 
 .nominee-card__vote-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -327,17 +327,16 @@
   }
 
   .nominee-card__vote-count {
-    min-width: 70px;
-    min-height: 70px;
-    padding: 16px 22px;
+    width: 85px;
+    height: 85px;
   }
 
   .nominee-card__vote-number {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .nominee-card__vote-label {
-    font-size: 10px;
+    font-size: 9px;
   }
 }
 
@@ -355,17 +354,16 @@
   }
 
   .nominee-card__vote-count {
-    min-width: 60px;
-    min-height: 60px;
-    padding: 14px 18px;
+    width: 70px;
+    height: 70px;
   }
 
   .nominee-card__vote-number {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .nominee-card__vote-label {
-    font-size: 9px;
+    font-size: 8px;
   }
 }
 
@@ -402,7 +400,7 @@
   }
 
   .nominee-card__vote-count {
-    background: linear-gradient(135deg, rgba(193, 158, 51, 0.75) 0%, rgba(166, 133, 43, 0.75) 100%);
+    background: linear-gradient(135deg, rgba(193, 158, 51, 0.6) 0%, rgba(166, 133, 43, 0.6) 100%);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 4px rgba(193, 158, 51, 0.3);
   }
 

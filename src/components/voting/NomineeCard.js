@@ -48,6 +48,18 @@ const NomineeCard = ({
     nomineeName: nominee.name
   });
 
+  // Format vote count for display
+  const formatVoteCount = (count) => {
+    if (count >= 10000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    } else if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toString();
+  };
+
+  const displayVoteCount = voteCount !== null ? formatVoteCount(voteCount) : '0';
+
   return (
     <div 
       className={`nominee-card ${isSelected ? 'nominee-card--selected' : ''} ${disabled ? 'nominee-card--disabled' : ''}`}
@@ -99,7 +111,7 @@ const NomineeCard = ({
         
         {showVoteCount && voteCount !== null && (
           <div className="nominee-card__vote-count">
-            <span className="nominee-card__vote-number">{voteCount}</span>
+            <span className="nominee-card__vote-number">{displayVoteCount}</span>
             <span className="nominee-card__vote-label">
               {voteCount === 1 ? 'vote' : 'votes'}
             </span>
