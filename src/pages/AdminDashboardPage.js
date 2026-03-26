@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { UserManagement, SystemMonitoring, PendingNominations, RateLimitManager } from '../components/admin';
+import { UserManagement, SystemMonitoring, PendingNominations, RateLimitManager, PresentationGenerator } from '../components/admin';
 import VoteBiasManager from '../components/admin/VoteBiasManager';
+import { useAuth } from '../contexts/AuthContext';
 import './AdminDashboardPage.css';
 
 const AdminDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('users');
+  const { user } = useAuth();
+  const canGeneratePresentation = user && ['System_Admin', 'Panelist'].includes(user.role);
 
   return (
     <div className="admin-dashboard">
@@ -66,6 +69,19 @@ const AdminDashboardPage = () => {
           </svg>
           Rate Limits
         </button>
+        {canGeneratePresentation && (
+          <button
+            onClick={() => setActiveTab('presentation')}
+            className={`admin-dashboard__tab ${activeTab === 'presentation' ? 'admin-dashboard__tab--active' : ''}`}
+            type="button"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            Presentation
+          </button>
+        )}
       </div>
 
       <div className="admin-dashboard__content">
@@ -96,6 +112,12 @@ const AdminDashboardPage = () => {
         {activeTab === 'rate-limit' && (
           <div className="admin-dashboard__tab-content">
             <RateLimitManager />
+          </div>
+        )}
+
+        {activeTab === 'presentation' && canGeneratePresentation && (
+          <div className="admin-dashboard__tab-content">
+            <PresentationGenerator />
           </div>
         )}
       </div>

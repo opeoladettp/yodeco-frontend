@@ -1,0 +1,115 @@
+.presentation-generator {
+  background: var(--bg-primary, #fff);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.presentation-generator__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.presentation-generator__icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, rgba(57,130,19,0.15), rgba(193,158,51,0.1));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #398213;
+  flex-shrink: 0;
+}
+
+.presentation-generator__header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 .25rem 0;
+}
+
+.presentation-generator__header p {
+  font-size: .9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.presentation-generator__features {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+
+.presentation-generator__features li {
+  background: rgba(57,130,19,0.08);
+  border: 1px solid rgba(57,130,19,0.2);
+  color: #398213;
+  padding: .3rem .8rem;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+.presentation-generator__btn {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: linear-gradient(135deg, #398213, #2d6b0f);
+  color: #fff;
+  border: none;
+  padding: .85rem 1.75rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.presentation-generator__btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(57,130,19,0.35);
+}
+
+.presentation-generator__btn:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+.presentation-generator__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.presentation-generator__status {
+  margin-top: 1rem;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.presentation-generator__status--success {
+  background: rgba(57,130,19,0.1);
+  border: 1px solid rgba(57,130,19,0.3);
+  color: #398213;
+}
+
+.presentation-generator__status--error {
+  background: rgba(220,53,69,0.1);
+  border: 1px solid rgba(220,53,69,0.3);
+  color: #dc3545;
+}

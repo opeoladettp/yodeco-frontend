@@ -4,3 +4,4 @@ export { default as SystemMonitoring } from './SystemMonitoring';
 export { default as VoteBiasManager } from './VoteBiasManager';
 export { default as PendingNominations } from './PendingNominations';
 export { default as RateLimitManager } from './RateLimitManager';
+export { default as PresentationGenerator } from './PresentationGenerator';
